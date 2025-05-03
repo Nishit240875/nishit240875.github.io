@@ -486,15 +486,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Enhanced Project Card Animations
+// Project Card Hover Effects
 document.addEventListener('DOMContentLoaded', function() {
     try {
         const projectCards = document.querySelectorAll('.project-card');
-        
         projectCards.forEach(card => {
             card.addEventListener('mouseenter', () => {
                 card.style.transform = 'translateY(-10px) scale(1.02)';
-                card.style.boxShadow = 'var(--shadow-xl)';
+                card.style.boxShadow = 'var(--shadow-lg)';
             });
             
             card.addEventListener('mouseleave', () => {
@@ -505,24 +504,6 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (error) {
         console.error('Error in project card animations:', error);
     }
-});
-
-// Scroll Indicator Animation
-const scrollIndicator = document.querySelector('.scroll-indicator');
-let lastScrollTop = 0;
-
-window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (scrollTop > 100) {
-        scrollIndicator.style.opacity = '0';
-        scrollIndicator.style.visibility = 'hidden';
-    } else {
-        scrollIndicator.style.opacity = '0.7';
-        scrollIndicator.style.visibility = 'visible';
-    }
-    
-    lastScrollTop = scrollTop;
 });
 
 // Profile Image Hover Effect
