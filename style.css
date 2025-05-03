@@ -136,12 +136,13 @@ html {
     opacity: 0.8;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .typing-text {
-    display: inline-block;
+    display: block;
     margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .cursor {
@@ -271,6 +272,9 @@ html {
 
     .hero-left {
         order: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .hero-right {
@@ -278,7 +282,17 @@ html {
     }
 
     .hero-subtitle {
+        display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .typing-text {
+        display: block;
+        text-align: center;
+        width: 100%;
     }
 
     .hero-buttons {
