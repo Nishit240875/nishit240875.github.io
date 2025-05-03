@@ -132,39 +132,129 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Enhanced Form Validation and EmailJS Integration
+// Contact Form Submission
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize EmailJS
     try {
-        const contactForm = document.querySelector('.contact-form');
-        if (contactForm) {
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const formData = new FormData(this);
-                const submitButton = this.querySelector('.send-btn');
-                
-                // Add loading state
-                submitButton.classList.add('sending');
-                submitButton.disabled = true;
-                
-                // Simulate form submission
-                setTimeout(() => {
-                    submitButton.classList.remove('sending');
-                    submitButton.classList.add('success');
-                    showNotification('Message sent successfully!', 'success');
-                    this.reset();
-                    
-                    // Reset button state after animation
-                    setTimeout(() => {
-                        submitButton.classList.remove('success');
-                        submitButton.disabled = false;
-                    }, 2000);
-                }, 2000);
-            });
-        }
+        emailjs.init("U3eMRXs9xU-xLhpat");
+        console.log("EmailJS initialized successfully");
     } catch (error) {
-        console.error('Error in form handling:', error);
+        console.error("EmailJS initialization failed:", error);
+        showNotification("Email service initialization failed. Please try again later.", "error");
     }
+
+    const contactForm = document.getElementById('contact-form');
+    const sendBtn = document.querySelector('.send-btn');
+    const btnText = document.querySelector('.btn-text');
+    const btnIcon = document.querySelector('.btn-icon');
+    const btnLoading = document.querySelector('.btn-loading');
+
+    if (!contactForm || !sendBtn || !btnText || !btnIcon || !btnLoading) {
+        console.error('Required form elements not found');
+        showNotification("Form elements not found. Please refresh the page.", "error");
+        return;
+    }
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Validate form data
+        const name = document.getElementById('name')?.value.trim();
+        const email = document.getElementById('email')?.value.trim();
+        const subject = document.getElementById('subject')?.value.trim();
+        const message = document.getElementById('message')?.value.trim();
+
+        if (!name || !email || !subject || !message) {
+            showNotification("Please fill in all fields", "error");
+            return;
+        }
+
+        if (!email.includes('@') || !email.includes('.')) {
+            showNotification("Please enter a valid email address", "error");
+            return;
+        }
+        
+        // Show loading state
+        if (sendBtn && btnText) {
+            sendBtn.classList.add('loading');
+            btnText.textContent = 'Sending...';
+        }
+        
+        try {
+            // Get form data
+            const formData = {
+                from_name: name,
+                from_email: email,
+                subject: subject,
+                message: message
+            };
+
+            console.log('Form data:', formData);
+
+            // Send email using EmailJS
+            const response = await emailjs.send(
+                "service_c7r06qu", // Replace this with your actual service ID
+                "template_phi6soj", // Replace this with your actual template ID
+                formData
+            ).then(
+                function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    showNotification("Message sent successfully!", "success");
+                    
+                    // Show success state
+                    if (sendBtn && btnText) {
+                        sendBtn.classList.remove('loading');
+                        sendBtn.classList.add('success');
+                        btnText.textContent = 'Message Sent!';
+                    }
+                    
+                    // Reset form
+                    contactForm.reset();
+                    
+                    // Reset button state after 3 seconds
+                    setTimeout(() => {
+                        if (sendBtn && btnText) {
+                            sendBtn.classList.remove('success');
+                            btnText.textContent = 'Send Message';
+                        }
+                    }, 3000);
+                },
+                function(error) {
+                    console.log('FAILED...', error);
+                    let errorMessage = "Failed to send message. ";
+                    
+                    if (error.text.includes("service ID not found")) {
+                        errorMessage += "Service ID is incorrect. Please contact support.";
+                    } else if (error.text.includes("template ID not found")) {
+                        errorMessage += "Template ID is incorrect. Please contact support.";
+                    } else {
+                        errorMessage += "Please try again later.";
+                    }
+                    
+                    showNotification(errorMessage, "error");
+                    throw error;
+                }
+            );
+
+        } catch (error) {
+            console.error('Email sending failed:', error);
+            
+            // Show error state
+            if (sendBtn && btnText) {
+                sendBtn.classList.remove('loading');
+                sendBtn.classList.add('error');
+                btnText.textContent = 'Error! Try Again';
+            }
+            
+            // Reset button state after 3 seconds
+            setTimeout(() => {
+                if (sendBtn && btnText) {
+                    sendBtn.classList.remove('error');
+                    btnText.textContent = 'Send Message';
+                }
+            }, 3000);
+        }
+    });
 });
 
 // Enhanced Notification System

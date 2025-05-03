@@ -122,7 +122,7 @@
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-content">
                                     <h4>High School</h4>
-                                    <p class="timeline-date">2018 - 2020</p>
+                                    <p class="timeline-date">2019 - 2021</p>
                                     <p>Completed with focus on Science and Mathematics.</p>
                                 </div>
                             </div>
@@ -284,8 +284,8 @@
                             <i class="fas fa-envelope"></i>
                         </div>
                         <h3>Email</h3>
-                        <p>your.nishitchauhan0824@gmail.com</p>
-                        <a href="mailto:your.nishitchauhan0824@gmail.com" class="contact-link">Send Message</a>
+                        <p>nishitchauhan2408@gmail.com</p>
+                        <a href="mailto:nishitchauhan2408@gmail.com" class="contact-link">Send Message</a>
                     </div>
                     <div class="contact-card">
                         <div class="contact-icon">
@@ -304,31 +304,29 @@
                         <a href="https://linkedin.com/in/nishit-chauhan-331727278/" target="_blank" class="contact-link">View Profile</a>
                     </div>
                 </div>
-                <form class="contact-form">
+                <form id="contact-form" class="contact-form">
                     <div class="form-group">
-                        <input type="text" name="from_name" placeholder="Your Name" required>
                         <i class="fas fa-user"></i>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" name="from_email" placeholder="Your Email" required>
                         <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Your Email" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" name="subject" placeholder="Subject" required>
                         <i class="fas fa-tag"></i>
+                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
                     </div>
                     <div class="form-group">
-                        <textarea name="message" placeholder="Your Message" required></textarea>
                         <i class="fas fa-comment"></i>
+                        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
                     </div>
-                    <button type="submit" class="btn primary send-btn">
+                    <button type="submit" class="send-btn">
                         <span class="btn-text">Send Message</span>
-                        <span class="btn-icon">
-                            <i class="fas fa-paper-plane"></i>
-                        </span>
-                        <span class="btn-loading">
+                        <i class="fas fa-paper-plane btn-icon"></i>
+                        <div class="btn-loading">
                             <i class="fas fa-spinner fa-spin"></i>
-                        </span>
+                        </div>
                     </button>
                 </form>
             </div>
@@ -337,7 +335,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 Nishit Chauhan. All rights reserved.</p>
+            <p>&copy; 2025 Nishit Chauhan. All rights reserved.</p>
         </div>
     </footer>
 
@@ -345,18 +343,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         // Initialize EmailJS with your public key
-        document.addEventListener('DOMContentLoaded', function() {
+        (function() {
             try {
-                if (typeof emailjs !== 'undefined') {
-                    emailjs.init("U3eMRXs9xU-xLhpat");
-                    console.log("EmailJS initialized successfully");
-                } else {
-                    console.error("EmailJS library not loaded");
-                }
+                emailjs.init("U3eMRXs9xU-xLhpat");
+                console.log("EmailJS initialized in HTML");
             } catch (error) {
-                console.error("Error initializing EmailJS:", error);
+                console.error("EmailJS initialization failed in HTML:", error);
             }
-        });
+        })();
     </script>
     <script src="./script.js"></script>
 </body>
