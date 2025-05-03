@@ -1,32 +1,65 @@
 // Theme Toggle
 document.addEventListener('DOMContentLoaded', function() {
     try {
-        const themeToggle = document.querySelector('.theme-toggle');
+        const desktopThemeToggle = document.querySelector('.desktop-theme-toggle');
+        const mobileThemeToggle = document.querySelector('.mobile-theme-toggle');
         const body = document.body;
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
 
-        if (themeToggle && body) {
-            // Check for saved theme preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                body.setAttribute('data-theme', savedTheme);
-                updateThemeIcon(savedTheme);
-            }
+        // Function to update theme
+        function updateTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeIcons(theme);
+        }
 
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = body.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                
-                body.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeIcon(newTheme);
-            });
-
-            function updateThemeIcon(theme) {
-                const icon = themeToggle.querySelector('i');
+        // Function to update all theme icons
+        function updateThemeIcons(theme) {
+            const themeToggles = document.querySelectorAll('.theme-toggle');
+            themeToggles.forEach(toggle => {
+                const icon = toggle.querySelector('i');
                 if (icon) {
                     icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
                 }
+            });
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        updateTheme(savedTheme);
+
+        // Add click handlers to both toggles
+        [desktopThemeToggle, mobileThemeToggle].forEach(toggle => {
+            if (toggle) {
+                toggle.addEventListener('click', () => {
+                    const currentTheme = body.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    updateTheme(newTheme);
+                });
             }
+        });
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                updateTheme(newTheme);
+            }
+        });
+
+        // Mobile menu theme toggle
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const navLinks = document.querySelector('.nav-links');
+                if (navLinks) {
+                    navLinks.classList.toggle('active');
+                    mobileMenuBtn.classList.toggle('active');
+                    mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
+                        '<i class="fas fa-times"></i>' : 
+                        '<i class="fas fa-bars"></i>';
+                }
+            });
         }
     } catch (error) {
         console.error('Error in theme toggle:', error);
@@ -715,5 +748,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     } catch (error) {
         console.error('Error initializing UI interactions:', error);
+    }
+});
+
+// Scroll Down Button Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollDownButton = document.querySelector('.scroll-down');
+    const aboutSection = document.querySelector('#about');
+
+    if (scrollDownButton && aboutSection) {
+        scrollDownButton.addEventListener('click', function() {
+            aboutSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+
+        // Add scroll event listener to hide button when scrolling down
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', function() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > lastScrollTop) {
+                // Scrolling down
+                scrollDownButton.style.opacity = '0';
+                scrollDownButton.style.visibility = 'hidden';
+            } else {
+                // Scrolling up
+                scrollDownButton.style.opacity = '1';
+                scrollDownButton.style.visibility = 'visible';
+            }
+            
+            lastScrollTop = scrollTop;
+        });
     }
 }); 
