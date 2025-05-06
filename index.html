@@ -15,6 +15,9 @@
                 <span class="logo-text">NC</span>
                 <span class="logo-dot"></span>
             </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span class="hamburger"></span>
+            </button>
             <div class="nav-links">
                 <a href="#home" class="active">Home</a>
                 <a href="#about">About</a>
@@ -22,16 +25,12 @@
                 <a href="#contact">Contact</a>
                 <button class="theme-toggle mobile-theme-toggle">
                     <i class="fas fa-moon"></i>
+                    <span></span>
                 </button>
             </div>
-            <div class="theme-toggle desktop-theme-toggle">
-                <i class="fas fa-moon"></i>
-            </div>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
         </div>
     </nav>
+    <div class="menu-overlay"></div>
 
     <section id="home" class="hero">
         <div class="hero-background">
@@ -84,7 +83,8 @@
             <div class="hero-right">
                 <div class="profile-container">
                     <div class="profile-image">
-                        <img src="https://i.postimg.cc/fRTSj8k0/Whats-App-Image-2024-11-25-at-15-41-43-cbd9bea6.jpg" alt="Nishit Chauhan">
+                        <div class="glow"></div>
+                        <img src="https://i.postimg.cc/VLQLjh6V/Whats-App-Image-2025-05-06-at-15-57-58-108f5b53-Photoroom.png" alt="Nishit Chauhan">
                     </div>
                     <div class="profile-badge">
                         <span class="badge-text">Available for Work</span>
@@ -199,14 +199,6 @@
                 <div class="project-card" data-category="web">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/3NZkQ0GL/2096858.jpg" alt="Car Decore">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://github.com/nishitchauhan/car-decore" class="project-link" target="_blank">
-                                    <i class="fas fa-link"></i>
-                                    <span>Live Demo</span>
-                                </a>
-                            </div>
-                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Car Decore</h3>
@@ -223,14 +215,6 @@
                 <div class="project-card" data-category="web">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/VNqysq7W/download.png" alt="Lost and Found">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://github.com/nishitchauhan/lost-and-found" class="project-link" target="_blank">
-                                    <i class="fas fa-link"></i>
-                                    <span>Live Demo</span>
-                                </a>
-                            </div>
-                        </div>
                     </div>
                     <div class="project-info">
                         <h3>Lost and Found</h3>
@@ -246,14 +230,6 @@
                 <div class="project-card" data-category="web">
                     <div class="project-image">
                         <img src="https://i.postimg.cc/Nj4spwtc/e-best-e-learning-companies-in-India-1024x576.jpg" alt="E-Learning System">
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="https://github.com/nishitchauhan/e-learning-system" class="project-link" target="_blank">
-                                    <i class="fas fa-link"></i>
-                                    <span>Live Demo</span>
-                                </a>
-                            </div>
-                        </div>
                     </div>
                     <div class="project-info">
                         <h3>E-Learning System</h3>
@@ -334,7 +310,14 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 Nishit Chauhan. All rights reserved.</p>
+            <div class="footer-content">
+                <p>&copy; 2025 Nishit Chauhan. All rights reserved.</p>
+                <div class="visitor-counter">
+                    <i class="fas fa-eye"></i>
+                    <span id="visitorCount">0</span>
+                    <span class="counter-label">Visitors</span>
+                </div>
+            </div>
         </div>
     </footer>
 

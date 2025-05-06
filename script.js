@@ -418,71 +418,34 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Mobile Menu Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-        const navLinksItems = document.querySelectorAll('.nav-links a');
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const navLinks = document.querySelector('.nav-links');
+const menuOverlay = document.querySelector('.menu-overlay');
+const navLinksItems = document.querySelectorAll('.nav-links a');
 
-        // Toggle mobile menu
-        mobileMenuBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.classList.toggle('active');
-            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? 
-                '<i class="fas fa-times"></i>' : 
-                '<i class="fas fa-bars"></i>';
-        });
+function toggleMenu() {
+    mobileMenuBtn.classList.toggle('active');
+    navLinks.classList.toggle('active');
+    menuOverlay.classList.toggle('active');
+    document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+}
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!navLinks.contains(event.target) && 
-                !mobileMenuBtn.contains(event.target) && 
-                navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        });
+mobileMenuBtn.addEventListener('click', toggleMenu);
+menuOverlay.addEventListener('click', toggleMenu);
 
-        // Close mobile menu when clicking a link
-        navLinksItems.forEach(link => {
-            link.addEventListener('click', function() {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            });
-        });
-
-        // Fix for iOS Safari 100vh issue
-        function setVH() {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
+// Close menu when clicking on a link
+navLinksItems.forEach(link => {
+    link.addEventListener('click', () => {
+        if (navLinks.classList.contains('active')) {
+            toggleMenu();
         }
+    });
+});
 
-        setVH();
-        window.addEventListener('resize', setVH);
-        window.addEventListener('orientationchange', setVH);
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const headerOffset = 60;
-                    const elementPosition = target.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-    } catch (error) {
-        console.error('Error initializing mobile menu:', error);
+// Close menu on window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+        toggleMenu();
     }
 });
 
@@ -763,4 +726,29 @@ document.addEventListener('DOMContentLoaded', function() {
             lastScrollTop = scrollTop;
         });
     }
-}); 
+});
+
+// Visitor Counter
+function updateVisitorCount() {
+    // Get the current count from localStorage
+    let count = localStorage.getItem('visitorCount') || 0;
+    
+    // Increment the count
+    count = parseInt(count) + 1;
+    
+    // Save the new count
+    localStorage.setItem('visitorCount', count);
+    
+    // Update the display
+    document.getElementById('visitorCount').textContent = count;
+    
+    // Animate the counter
+    const counter = document.getElementById('visitorCount');
+    counter.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+        counter.style.transform = 'scale(1)';
+    }, 200);
+}
+
+// Initialize visitor count when page loads
+document.addEventListener('DOMContentLoaded', updateVisitorCount); 
