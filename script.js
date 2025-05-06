@@ -5,26 +5,49 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileThemeToggle = document.querySelector('.mobile-theme-toggle');
         const body = document.body;
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const themeIcon = document.querySelector('.theme-toggle i');
 
-        // Function to update theme
+        // Function to update theme with smooth transition
         function updateTheme(theme) {
+            // Add transition class
+            body.classList.add('theme-transition');
+            
+            // Update theme
             body.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
+            
+            // Update icons
             updateThemeIcons(theme);
+            
+            // Remove transition class after animation
+            setTimeout(() => {
+                body.classList.remove('theme-transition');
+            }, 300);
         }
 
-        // Function to update all theme icons
+        // Function to update all theme icons and text
         function updateThemeIcons(theme) {
             const themeToggles = document.querySelectorAll('.theme-toggle');
             themeToggles.forEach(toggle => {
                 const icon = toggle.querySelector('i');
+                const text = toggle.querySelector('.theme-text');
+                
                 if (icon) {
-                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                    // Add rotation animation
+                    icon.style.transform = 'rotate(360deg)';
+                    setTimeout(() => {
+                        icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                        icon.style.transform = 'rotate(0deg)';
+                    }, 150);
+                }
+                
+                if (text) {
+                    text.textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
                 }
             });
         }
 
-        // Initialize theme
+        // Initialize theme with system preference
         const savedTheme = localStorage.getItem('theme') || 
             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         updateTheme(savedTheme);
@@ -61,6 +84,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+
+        // Add theme transition to all elements
+        document.querySelectorAll('*').forEach(element => {
+            element.classList.add('theme-transition');
+        });
+
     } catch (error) {
         console.error('Error in theme toggle:', error);
     }
@@ -726,29 +755,4 @@ document.addEventListener('DOMContentLoaded', function() {
             lastScrollTop = scrollTop;
         });
     }
-});
-
-// Visitor Counter
-function updateVisitorCount() {
-    // Get the current count from localStorage
-    let count = localStorage.getItem('visitorCount') || 0;
-    
-    // Increment the count
-    count = parseInt(count) + 1;
-    
-    // Save the new count
-    localStorage.setItem('visitorCount', count);
-    
-    // Update the display
-    document.getElementById('visitorCount').textContent = count;
-    
-    // Animate the counter
-    const counter = document.getElementById('visitorCount');
-    counter.style.transform = 'scale(1.2)';
-    setTimeout(() => {
-        counter.style.transform = 'scale(1)';
-    }, 200);
-}
-
-// Initialize visitor count when page loads
-document.addEventListener('DOMContentLoaded', updateVisitorCount); 
+}); 
