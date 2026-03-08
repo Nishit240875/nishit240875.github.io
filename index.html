@@ -1,319 +1,514 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nishit Chauhan | Portfolio</title>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Nishit Chauhan — Junior Developer · Flutter · Laravel · MERN Stack"/>
+  <title>Nishit Chauhan — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#home" class="logo">
-                <span class="logo-text">NC</span>
-                <span class="logo-dot"></span>
-            </a>
-            <button class="mobile-menu-btn" aria-label="Toggle menu">
-                <span class="hamburger"></span>
-            </button>
-            <div class="nav-links">
-                <a href="#home" class="active">Home</a>
-                <a href="#about">About</a>
-                <a href="#portfolio">Portfolio</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
+
+<!-- ████ NAVBAR ████ -->
+<header class="navbar" id="navbar">
+  <div class="nav-wrap">
+    <a href="#home" class="nav-logo">NC<span>.</span></a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#home"       class="nl active">Home</a>
+      <a href="#about"      class="nl">About</a>
+      <a href="#experience" class="nl">Experience</a>
+      <a href="#skills"     class="nl">Skills</a>
+      <a href="#projects"   class="nl">Projects</a>
+      <a href="#education"  class="nl">Education</a>
+      <a href="#contact"    class="nl">Contact</a>
     </nav>
-    <div class="menu-overlay"></div>
 
-    <section id="home" class="hero">
-        <div class="hero-background">
-            <div class="hero-shapes">
-                <div class="shape shape-1"></div>
-                <div class="shape shape-2"></div>
-                <div class="shape shape-3"></div>
-            </div>
+    <div class="nav-right">
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <span class="theme-icon dark-icon"><i class="fas fa-moon"></i></span>
+        <span class="theme-icon light-icon"><i class="fas fa-sun"></i></span>
+      </button>
+      <!-- FIXED: Hire Me now scrolls to #contact -->
+      <a href="#contact" class="hire-btn">Hire Me</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ████ MOBILE MENU ████ -->
+<div class="mob-menu" id="mobMenu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+
+  <!-- Top bar -->
+  <div class="mm-topbar">
+    <a href="#home" class="mm-logo">NC<span>.</span></a>
+    <div class="mm-topbar-right">
+      <button class="mm-theme-pill" id="mmThemeBtn" aria-label="Toggle theme">
+        <span class="mm-tp-dark"><i class="fas fa-moon"></i> Dark</span>
+        <span class="mm-tp-light"><i class="fas fa-sun"></i> Light</span>
+      </button>
+      <button class="mm-close-btn" id="mobClose" aria-label="Close menu">
+        <i class="fas fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Profile strip with uploadable image -->
+  <div class="mm-profile">
+    <div class="mm-avatar-wrap" id="mmAvatarWrap" title="Click to upload photo">
+      <div class="mm-avatar" id="mmAvatar">
+        <span class="mm-avatar-initials" id="mmAvatarInitials">NC</span>
+        <img class="mm-avatar-img" id="mmAvatarImg" src="" alt="Profile" style="display:none;"/>
+      </div>
+      <div class="mm-avatar-overlay">
+        <i class="fas fa-camera"></i>
+      </div>
+      <input type="file" id="mmAvatarInput" accept="image/*" style="display:none;" aria-label="Upload profile photo"/>
+    </div>
+    <div class="mm-profile-text">
+      <strong>Nishit Chauhan</strong>
+      <span>Junior Developer · Mehta Websolution</span>
+      <div class="mm-status-row">
+        <span class="mm-avail-dot" title="Available for work"></span>
+        <span class="mm-avail-text">Available for work</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nav links -->
+  <nav class="mm-nav">
+    <a href="#home"       class="mm-link" data-num="01"><span class="mm-link-left"><span class="mm-num">01</span><span class="mm-icon-wrap"><i class="fas fa-house"></i></span><span class="mm-label">Home</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+    <a href="#about"      class="mm-link" data-num="02"><span class="mm-link-left"><span class="mm-num">02</span><span class="mm-icon-wrap"><i class="fas fa-user"></i></span><span class="mm-label">About</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+    <a href="#experience" class="mm-link" data-num="03"><span class="mm-link-left"><span class="mm-num">03</span><span class="mm-icon-wrap"><i class="fas fa-briefcase"></i></span><span class="mm-label">Experience</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+    <a href="#skills"     class="mm-link" data-num="04"><span class="mm-link-left"><span class="mm-num">04</span><span class="mm-icon-wrap"><i class="fas fa-code"></i></span><span class="mm-label">Skills</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+    <a href="#projects"   class="mm-link" data-num="05"><span class="mm-link-left"><span class="mm-num">05</span><span class="mm-icon-wrap"><i class="fas fa-folder-open"></i></span><span class="mm-label">Projects</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+    <a href="#education"  class="mm-link" data-num="06"><span class="mm-link-left"><span class="mm-num">06</span><span class="mm-icon-wrap"><i class="fas fa-graduation-cap"></i></span><span class="mm-label">Education</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+    <a href="#contact"    class="mm-link" data-num="07"><span class="mm-link-left"><span class="mm-num">07</span><span class="mm-icon-wrap"><i class="fas fa-envelope"></i></span><span class="mm-label">Contact</span></span><i class="fas fa-chevron-right mm-chevron"></i></a>
+  </nav>
+
+  <!-- Bottom: socials + CTA -->
+  <div class="mm-footer">
+    <div class="mm-social">
+      <a href="https://github.com/nishitchauhan" target="_blank" rel="noopener" class="mm-soc-btn" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://linkedin.com/in/nishit-chauhan-331727278/" target="_blank" rel="noopener" class="mm-soc-btn" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.instagram.com/nishit_chauhan_97/" target="_blank" rel="noopener" class="mm-soc-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+    </div>
+    <!-- FIXED: CTA now points to #contact -->
+    <a href="#contact" class="mm-cta-btn" id="mmCtaBtn">
+      <i class="fas fa-paper-plane"></i> Hire Me
+    </a>
+  </div>
+
+</div>
+<div class="mob-overlay" id="mobOverlay"></div>
+
+
+<!-- ████ HERO ████ -->
+<section id="home" class="hero">
+  <div class="hero-bg">
+    <div class="hbg-grid"></div>
+    <div class="hbg-blob b1"></div>
+    <div class="hbg-blob b2"></div>
+    <div class="hbg-blob b3"></div>
+    <div class="hbg-blob b4"></div>
+    <div class="hbg-noise"></div>
+    <div class="hbg-vignette"></div>
+  </div>
+
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="hb-dot"></span> Available for Opportunities
+      </div>
+
+      <h1 class="hero-heading">
+        <span class="hh-line1">Hi, I'm</span>
+        <span class="hh-name">Nishit<br/>Chauhan</span>
+      </h1>
+
+      <div class="hero-role-row">
+        <span class="hrr-at">@</span>
+        <strong class="hrr-company">Mehta Websolution</strong>
+        <span class="hrr-sep">·</span>
+        <span class="hrr-title">Junior Developer</span>
+      </div>
+
+      <div class="hero-type-row">
+        <span class="htr-prefix">Building&nbsp;</span>
+        <span class="htr-word" id="twWord">Flutter Apps</span>
+        <span class="htr-cursor">|</span>
+      </div>
+
+      <p class="hero-desc">
+        Flutter &amp; Web Developer crafting responsive mobile apps and full-stack web solutions.
+        Passionate about clean code, great user experience, and continuous learning.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-primary">View Projects <i class="fas fa-arrow-right"></i></a>
+        <a href="#contact"  class="btn-secondary">Contact Me</a>
+      </div>
+
+      <div class="hero-tech-pills">
+        <span class="tp"><i class="fas fa-mobile-alt" style="color:#54c5f8"></i> Flutter</span>
+        <span class="tp"><i class="fab fa-laravel" style="color:#ef4444"></i> Laravel</span>
+        <span class="tp"><i class="fab fa-react" style="color:#61dafb"></i> React</span>
+        <span class="tp"><i class="fab fa-node-js" style="color:#6cc24a"></i> Node.js</span>
+      </div>
+
+      <div class="hero-numbers">
+        <div class="hn-item">
+          <span class="hn-val" data-to="1">0</span><span class="hn-plus">+</span>
+          <span class="hn-label">Yr Experience</span>
         </div>
-        <div class="hero-content">
-            <div class="hero-left">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        <span class="greeting">Hi, I'm</span>
-                        <span class="name">Nishit Chauhan</span>
-                    </h1>
-                    <h2 class="hero-subtitle">
-                        <span class="typing-text">Computer Engineering Student</span>
-                        <span class="typing-text">Web Developer</span>
-                        <span class="typing-text">Software Developer</span>
-                        <span class="cursor">|</span>       
-                    </h2>
-                    <p class="hero-description">
-                        Passionate about creating innovative web solutions and exploring new technologies. 
-                        I combine technical expertise with creative problem-solving to build impactful digital experiences.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#portfolio" class="btn primary">
-                            <span>View My Work</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                        <a href="#contact" class="btn secondary">
-                            <span>Contact Me</span>
-                            <i class="fas fa-envelope"></i>
-                        </a>
-                    </div>
-                    <div class="hero-social">
-                        <a href="https://github.com/nishitchauhan" class="social-link" target="_blank">
-                            <i class="fab fa-github"></i>
-                        </a>
-                        <a href="https://linkedin.com/in/nishit-chauhan-331727278/" class="social-link" target="_blank">
-                            <i class="fab fa-linkedin"></i>
-                        </a>
-                        <a href="https://www.instagram.com/nishit_chauhan_97/profilecard/?igsh=YXhpZHQzcmIwaTY=" class="social-link" target="_blank">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-right">
-                <div class="profile-container">
-                    <div class="profile-image">
-                        <div class="glow"></div>
-                        <img src="https://i.postimg.cc/VLQLjh6V/Whats-App-Image-2025-05-06-at-15-57-58-108f5b53-Photoroom.png" alt="Nishit Chauhan">
-                    </div>
-                    <div class="profile-badge">
-                        <span class="badge-text">Available for Work</span>
-                        <div class="badge-dot"></div>
-                    </div>
-                </div>
-            </div>
+        <div class="hn-line"></div>
+        <div class="hn-item">
+          <span class="hn-val" data-to="5">0</span><span class="hn-plus">+</span>
+          <span class="hn-label">Projects</span>
         </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">About Me</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="about-content">
-                <div class="about-left">
-                    <div class="about-card">
-                        <div class="card-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h3>Education</h3>
-                        <div class="timeline">
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <h4>Computer Engineering</h4>
-                                    <p class="timeline-date">2025 - Completed</p>
-                                    <p>Currently pursuing my degree with a focus on web technologies and software development.</p>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div class="timeline-content">
-                                    <h4>High School</h4>
-                                    <p class="timeline-date">2019 - 2021</p>
-                                    <p>Completed with focus on Science and Mathematics.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-right">
-                    <div class="skills-section">
-                        <h3>Skills & Expertise</h3>
-                        <div class="skills-grid">
-                            <div class="skill-card">
-                                <div class="skill-icon">
-                                    <i class="fab fa-html5"></i>
-                                </div>
-                                <h4>Frontend Development</h4>
-                                <p>HTML, CSS, JavaScript, React</p>
-                            </div>
-                            <div class="skill-card">
-                                <div class="skill-icon">
-                                    <i class="fas fa-server"></i>
-                                </div>
-                                <h4>Backend Development</h4>
-                                <p>Node.js, Express, MongoDB</p>
-                            </div>
-                            <div class="skill-card">
-                                <div class="skill-icon">
-                                    <i class="fas fa-tools"></i>
-                                </div>
-                                <h4>Tools & Technologies</h4>
-                                <p>Git, VS Code, Figma</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hobbies-section">
-                        <h3>Hobbies & Interests</h3>
-                        <div class="hobbies-grid">
-                            <div class="hobby-item">
-                                <i class="fas fa-gamepad"></i>
-                                <span>Gaming</span>
-                            </div>
-                            <div class="hobby-item">
-                                <i class="fas fa-music"></i>
-                                <span>Music</span>
-                            </div>
-                            <div class="hobby-item">
-                                <i class="fas fa-book-reader"></i>
-                                <span>Reading</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="hn-line"></div>
+        <div class="hn-item">
+          <span class="hn-val" data-to="4">0</span><span class="hn-plus">+</span>
+          <span class="hn-label">Certifications</span>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">My Projects</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="portfolio-filters">
-                <button class="filter-btn active" data-filter="all">All Projects</button>
-            </div>
-            <div class="project-grid">
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <img src="https://i.postimg.cc/3NZkQ0GL/2096858.jpg" alt="Car Decore">
-                    </div>
-                    <div class="project-info">
-                        <h3>Car Decore</h3>
-                        <p>A web-based solution for selling car parts and booking appointments.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">HTML</span>
-                            <span class="tech-tag">CSS</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">Node.js</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <img src="https://i.postimg.cc/VNqysq7W/download.png" alt="Lost and Found">
-                    </div>
-                    <div class="project-info">
-                        <h3>Lost and Found</h3>
-                        <p>A PHP project to manage lost items.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">PHP</span>
-                            <span class="tech-tag">MySQL</span>
-                            <span class="tech-tag">HTML/CSS</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card" data-category="web">
-                    <div class="project-image">
-                        <img src="https://i.postimg.cc/Nj4spwtc/e-best-e-learning-companies-in-India-1024x576.jpg" alt="E-Learning System">
-                    </div>
-                    <div class="project-info">
-                        <h3>E-Learning System</h3>
-                        <p>A MERN stack project for online learning and course sales.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">MongoDB</span>
-                            <span class="tech-tag">Express</span>
-                            <span class="tech-tag">React</span>
-                            <span class="tech-tag">Node.js</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="hero-right">
+      <div class="hero-card-stack">
+        <div class="hcs-main">
+          <div class="hcs-avatar">
+            <span>NC</span>
+          </div>
+          <h2 class="hcs-name">Nishit Chauhan</h2>
+          <p class="hcs-role">Junior Developer</p>
+          <div class="hcs-tags">
+            <span>Flutter</span><span>Laravel</span><span>MERN</span>
+          </div>
+          <div class="hcs-stat-row">
+            <div class="hcs-stat"><strong>5+</strong><span>Projects</span></div>
+            <div class="hcs-divider"></div>
+            <div class="hcs-stat"><strong>4+</strong><span>Certs</span></div>
+            <div class="hcs-divider"></div>
+            <div class="hcs-stat"><strong>1+</strong><span>Yr Exp</span></div>
+          </div>
+          <div class="hcs-avail">
+            <span class="avail-dot"></span> Open to work
+          </div>
         </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Contact Me</h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-card">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h3>Email</h3>
-                        <p>nishitchauhan2408@gmail.com</p>
-                        <a href="mailto:nishitchauhan2408@gmail.com" class="contact-link">Send Message</a>
-                    </div>
-                    <div class="contact-card">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <h3>Phone</h3>
-                        <p>+91 9106801662</p>
-                        <a href="tel:+919106801662" class="contact-link">Call Me</a>
-                    </div>
-                    <div class="contact-card">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin"></i>
-                        </div>
-                        <h3>LinkedIn</h3>
-                        <p>Connect with me</p>
-                        <a href="https://linkedin.com/in/nishit-chauhan-331727278/" target="_blank" class="contact-link">View Profile</a>
-                    </div>
-                </div>
-                <form id="contact-form" class="contact-form">
-                    <div class="form-group">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="name" name="name" placeholder="Your Name" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="Your Email" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-tag"></i>
-                        <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                    </div>
-                    <div class="form-group">
-                        <i class="fas fa-comment"></i>
-                        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
-                    </div>
-                    <button type="submit" class="send-btn">
-                        <span class="btn-text">Send Message</span>
-                        <i class="fas fa-paper-plane btn-icon"></i>
-                        <div class="btn-loading">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
-                    </button>
-                </form>
-            </div>
+        <div class="hcs-float hcs-float-tr">
+          <div class="hcf-icon gp"><i class="fab fa-google-play"></i></div>
+          <div class="hcf-text">
+            <div class="hcf-t">MySplitly</div>
+            <div class="hcf-s">Live on Play Store</div>
+          </div>
         </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Nishit Chauhan. All rights reserved.</p>
+        <div class="hcs-float hcs-float-bl">
+          <div class="hcf-icon loc"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="hcf-text">
+            <div class="hcf-t">Jamnagar, Gujarat</div>
+            <div class="hcf-s">India</div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <script>
-        // Initialize EmailJS with your public key
-        (function() {
-            try {
-                emailjs.init("U3eMRXs9xU-xLhpat");
-                console.log("EmailJS initialized in HTML");
-            } catch (error) {
-                console.error("EmailJS initialization failed in HTML:", error);
-            }
-        })();
-    </script>
-    <script src="./script.js"></script>
+  <div class="hero-scroll"><div class="hs-bar"></div><span>Scroll Down</span></div>
+</section>
+
+
+<!-- ████ ABOUT ████ -->
+<section id="about" class="about sec-pad">
+  <div class="container">
+    <div class="sec-eyebrow reveal">About Me</div>
+    <div class="about-grid">
+      <div class="about-text-col reveal-l">
+        <h2 class="sec-title">Who I <em>Am</em></h2>
+        <p class="body-p">
+          I'm a <strong>Junior Developer</strong> at Mehta Websolution with experience building Flutter mobile apps and Laravel-powered backends. I graduated with a B.Tech in Computer Engineering from Marwadi University (NAAC A+) in 2025.
+        </p>
+        <p class="body-p">
+          My work spans Flutter/Dart for Android &amp; iOS, Laravel for REST APIs, and the MERN stack for full-stack web apps. I care deeply about writing clean, maintainable code and delivering smooth user experiences.
+        </p>
+        <p class="body-p">
+          When I'm not coding, I'm at cricket practice, listening to music, or exploring new mobile and web technologies with the Circuitology tech club.
+        </p>
+        <div class="about-info-grid">
+          <div class="ai-card"><i class="fas fa-briefcase"></i><div><strong>Current Role</strong><span>Junior Developer · Mehta Websolution</span></div></div>
+          <div class="ai-card"><i class="fas fa-graduation-cap"></i><div><strong>B.Tech · Computer Engg.</strong><span>Marwadi University · 2021–2025</span></div></div>
+          <div class="ai-card"><i class="fas fa-map-marker-alt"></i><div><strong>Location</strong><span>Jamnagar, Gujarat, India</span></div></div>
+          <div class="ai-card"><i class="fas fa-envelope"></i><div><strong>Email</strong><span><a href="mailto:nishitchauhan2408@gmail.com">nishitchauhan2408@gmail.com</a></span></div></div>
+        </div>
+      </div>
+      <div class="about-visual-col reveal-r">
+        <div class="av-card av-objective">
+          <div class="avc-header"><div class="avc-icon"><i class="fas fa-bullseye"></i></div><h3>Career Objective</h3></div>
+          <p>Junior Developer with experience in Flutter mobile application development and Laravel backend development. Seeking an opportunity to contribute to scalable web and mobile solutions while continuously learning modern technologies.</p>
+        </div>
+        <div class="av-highlights">
+          <div class="avh-item"><div class="avh-num" data-to="5">0</div><div class="avh-label">Projects Built</div></div>
+          <div class="avh-item"><div class="avh-num" data-to="4">0</div><div class="avh-label">Certifications</div></div>
+          <div class="avh-item"><div class="avh-num accent-num" data-to="1">0</div><div class="avh-label">App on Play Store</div></div>
+        </div>
+        <div class="av-card av-social">
+          <span class="avs-label">Connect with me</span>
+          <div class="avs-links">
+            <a href="https://github.com/nishitchauhan" target="_blank" class="avs-link"><i class="fab fa-github"></i><span>GitHub</span></a>
+            <a href="https://linkedin.com/in/nishit-chauhan-331727278/" target="_blank" class="avs-link"><i class="fab fa-linkedin"></i><span>LinkedIn</span></a>
+            <a href="https://www.instagram.com/nishit_chauhan_97/" target="_blank" class="avs-link"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ████ EXPERIENCE ████ -->
+<section id="experience" class="experience sec-pad">
+  <div class="container">
+    <div class="sec-eyebrow reveal">Work History</div>
+    <h2 class="sec-title reveal">Work <em>Experience</em></h2>
+    <div class="exp-box reveal-u">
+      <div class="exp-header">
+        <div class="exp-co-info">
+          <div class="exp-logo-icon"><i class="fas fa-building"></i></div>
+          <div>
+            <h3 class="exp-role-title">Junior Developer</h3>
+            <p class="exp-company-name">Mehta Websolution · Jamnagar, Gujarat, India</p>
+          </div>
+        </div>
+        <div class="exp-meta-right">
+          <span class="exp-current-tag">● Current</span>
+          <span class="exp-date-tag"><i class="fas fa-calendar"></i> Oct 2025 – Present</span>
+        </div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Developed and published <strong>MySplitly</strong> — a bill-splitting Android app — to the Google Play Store using Flutter &amp; Dart.</li>
+        <li>Built responsive Android applications using Flutter framework with Material Design and clean widget architecture.</li>
+        <li>Assisted in implementing foundational Laravel concepts to support backend REST API development.</li>
+        <li>Reduced app crashes through systematic debugging during development phases.</li>
+        <li>Collaborated with team members to troubleshoot, test, and improve application functionality.</li>
+      </ul>
+      <div class="exp-skill-tags">
+        <span>Flutter</span><span>Dart</span><span>Laravel</span><span>REST API</span><span>Android Studio</span><span>Git</span>
+      </div>
+    </div>
+    <div class="splitly-banner reveal-u">
+      <div class="sb-left">
+        <div class="sb-app-icon"><i class="fab fa-google-play"></i></div>
+        <div class="sb-text">
+          <h4>MySplitly — Live on Google Play</h4>
+          <p>Bill-splitting app built with Flutter at Mehta Websolution · Real users · Real impact</p>
+        </div>
+      </div>
+      <a href="https://play.google.com/store/apps/details?id=com.mw.splitly" target="_blank" rel="noopener" class="sb-btn">View on Play Store <i class="fas fa-external-link-alt"></i></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ████ SKILLS ████ -->
+<section id="skills" class="skills sec-pad">
+  <div class="container">
+    <div class="sec-eyebrow reveal">Tech Stack</div>
+    <h2 class="sec-title reveal">Skills &amp; <em>Technologies</em></h2>
+    <div class="skills-grid">
+      <div class="sk-card featured reveal-u" style="--i:0">
+        <div class="skc-head"><div class="skc-icon flutter-c"><i class="fas fa-mobile-alt"></i></div><h3>Mobile Development</h3><span class="skc-badge">Primary</span></div>
+        <p class="skc-desc">Building production-ready Android &amp; iOS apps with Flutter's clean widget architecture and Material Design.</p>
+        <div class="skc-tags"><span><i class="fab fa-flutter"></i> Flutter</span><span>Dart</span><span><i class="fab fa-android"></i> Android</span><span>Android Studio</span><span>Material UI</span></div>
+      </div>
+      <div class="sk-card reveal-u" style="--i:1">
+        <div class="skc-head"><div class="skc-icon html-c"><i class="fab fa-html5"></i></div><h3>Frontend</h3></div>
+        <div class="skc-tags"><span><i class="fab fa-html5"></i> HTML5</span><span><i class="fab fa-css3-alt"></i> CSS3</span><span><i class="fab fa-js-square"></i> JavaScript</span><span><i class="fab fa-react"></i> React</span></div>
+      </div>
+      <div class="sk-card reveal-u" style="--i:2">
+        <div class="skc-head"><div class="skc-icon laravel-c"><i class="fab fa-laravel"></i></div><h3>Backend</h3></div>
+        <div class="skc-tags"><span><i class="fab fa-laravel"></i> Laravel</span><span><i class="fab fa-node-js"></i> Node.js</span><span>Express.js</span><span>PHP</span><span>REST API</span></div>
+      </div>
+      <div class="sk-card reveal-u" style="--i:3">
+        <div class="skc-head"><div class="skc-icon db-c"><i class="fas fa-database"></i></div><h3>Database</h3></div>
+        <div class="skc-tags"><span>MongoDB</span><span>MySQL</span></div>
+      </div>
+      <div class="sk-card reveal-u" style="--i:4">
+        <div class="skc-head"><div class="skc-icon lang-c"><i class="fas fa-code"></i></div><h3>Languages</h3></div>
+        <div class="skc-tags"><span>PHP</span><span>Dart</span><span>JavaScript</span><span>SQL</span><span>C++</span></div>
+      </div>
+      <div class="sk-card reveal-u" style="--i:5">
+        <div class="skc-head"><div class="skc-icon tools-c"><i class="fas fa-tools"></i></div><h3>Tools</h3></div>
+        <div class="skc-tags"><span><i class="fab fa-git-alt"></i> Git</span><span><i class="fab fa-github"></i> GitHub</span><span>VS Code</span><span>Figma</span><span>Google Colab</span></div>
+      </div>
+    </div>
+    <div class="ticker-wrap">
+      <div class="ticker-track">
+        <span>Flutter</span><span>●</span><span>Dart</span><span>●</span><span>Laravel</span><span>●</span><span>React</span><span>●</span><span>Node.js</span><span>●</span><span>PHP</span><span>●</span><span>MySQL</span><span>●</span><span>MongoDB</span><span>●</span><span>REST API</span><span>●</span><span>Git</span><span>●</span><span>C++</span><span>●</span><span>Android Studio</span><span>●</span>
+        <span>Flutter</span><span>●</span><span>Dart</span><span>●</span><span>Laravel</span><span>●</span><span>React</span><span>●</span><span>Node.js</span><span>●</span><span>PHP</span><span>●</span><span>MySQL</span><span>●</span><span>MongoDB</span><span>●</span><span>REST API</span><span>●</span><span>Git</span><span>●</span><span>C++</span><span>●</span><span>Android Studio</span><span>●</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ████ PROJECTS ████ -->
+<section id="projects" class="projects sec-pad">
+  <div class="container">
+    <div class="sec-eyebrow reveal">My Work</div>
+    <h2 class="sec-title reveal">Featured <em>Projects</em></h2>
+    <div class="projects-grid">
+      <article class="pj-card pj-feat reveal-u" style="--i:0">
+        <div class="pj-img-area"><div class="pj-placeholder flutter-bg"><i class="fas fa-mobile-alt"></i></div><span class="pj-num">01</span><div class="pj-live-badge"><i class="fab fa-google-play"></i> Live App</div></div>
+        <div class="pj-content">
+          <div class="pj-meta-row"><span class="pj-category"><i class="fab fa-flutter"></i> Flutter App</span><span class="pj-year">2025</span></div>
+          <h3 class="pj-title">MySplitly</h3>
+          <p class="pj-desc">A bill-splitting Android app built with Flutter &amp; Dart at Mehta Websolution. Groups can split expenses with real-time calculations. <strong>Published live on Google Play Store.</strong></p>
+          <div class="pj-tech-list"><span>Flutter</span><span>Dart</span><span>Android</span><span>Material UI</span></div>
+          <div class="pj-actions"><a href="https://play.google.com/store/apps/details?id=com.mw.splitly" target="_blank" rel="noopener" class="pja-fill"><i class="fab fa-google-play"></i> Play Store</a></div>
+        </div>
+      </article>
+      <article class="pj-card reveal-u" style="--i:1">
+        <div class="pj-img-area"><img src="https://i.postimg.cc/Nj4spwtc/e-best-e-learning-companies-in-India-1024x576.jpg" alt="E-Learning System" loading="lazy"/><span class="pj-num">02</span></div>
+        <div class="pj-content">
+          <div class="pj-meta-row"><span class="pj-category">MERN Stack</span><span class="pj-year">2024</span></div>
+          <h3 class="pj-title">E-Learning System</h3>
+          <p class="pj-desc">Online learning platform with user authentication, course enrollment and management. Budget-friendly course delivery on the full MERN stack.</p>
+          <div class="pj-tech-list"><span>MongoDB</span><span>Express</span><span>React</span><span>Node.js</span></div>
+          <div class="pj-actions"><a href="https://github.com/nishitchauhan" target="_blank" class="pja-outline"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </article>
+      <article class="pj-card reveal-u" style="--i:2">
+        <div class="pj-img-area"><img src="https://i.postimg.cc/3NZkQ0GL/2096858.jpg" alt="Car Decor" loading="lazy"/><span class="pj-num">03</span></div>
+        <div class="pj-content">
+          <div class="pj-meta-row"><span class="pj-category">Web App</span><span class="pj-year">2024</span></div>
+          <h3 class="pj-title">Car Decor</h3>
+          <p class="pj-desc">Web platform for selling car accessories and managing customer appointment bookings with a user-friendly interface.</p>
+          <div class="pj-tech-list"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Node.js</span></div>
+          <div class="pj-actions"><a href="https://github.com/nishitchauhan" target="_blank" class="pja-outline"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </article>
+      <article class="pj-card reveal-u" style="--i:3">
+        <div class="pj-img-area"><img src="https://i.postimg.cc/VNqysq7W/download.png" alt="Lost and Found" loading="lazy"/><span class="pj-num">04</span></div>
+        <div class="pj-content">
+          <div class="pj-meta-row"><span class="pj-category">PHP · MySQL</span><span class="pj-year">2024</span></div>
+          <h3 class="pj-title">Lost &amp; Found System</h3>
+          <p class="pj-desc">Web application for reporting and searching lost items with listing, search functionality, and MySQL database storage.</p>
+          <div class="pj-tech-list"><span>PHP</span><span>MySQL</span><span>HTML/CSS</span></div>
+          <div class="pj-actions"><a href="https://github.com/nishitchauhan" target="_blank" class="pja-outline"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </article>
+      <article class="pj-card reveal-u" style="--i:4">
+        <div class="pj-img-area"><div class="pj-placeholder cpp-bg"><i class="fas fa-sim-card"></i></div><span class="pj-num">05</span></div>
+        <div class="pj-content">
+          <div class="pj-meta-row"><span class="pj-category">C++ · Console</span><span class="pj-year">2023</span></div>
+          <h3 class="pj-title">SIM Card Management</h3>
+          <p class="pj-desc">Console-based C++ application to manage SIM card sales and recharge records with customer data and transaction tracking.</p>
+          <div class="pj-tech-list"><span>C++</span><span>OOP</span><span>File I/O</span></div>
+          <div class="pj-actions"><a href="https://github.com/nishitchauhan" target="_blank" class="pja-outline"><i class="fab fa-github"></i> Code</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<!-- ████ EDUCATION ████ -->
+<section id="education" class="education sec-pad">
+  <div class="container">
+    <div class="sec-eyebrow reveal">Academic Background</div>
+    <h2 class="sec-title reveal">Education &amp; <em>Certifications</em></h2>
+    <div class="edu-layout">
+      <div class="edu-col reveal-l">
+        <h3 class="edu-col-heading"><i class="fas fa-graduation-cap"></i> Education</h3>
+        <div class="edu-timeline">
+          <div class="et-item"><div class="et-marker"></div><div class="et-card"><span class="et-period">2021 – 2025</span><h4>B.Tech — Computer Engineering</h4><p class="et-institute">Marwadi University <span class="naac-badge">NAAC A+</span></p><p class="et-loc"><i class="fas fa-map-marker-alt"></i> Rajkot, Gujarat</p><p class="et-score">CGPA: <strong>6.72 / 10.00</strong></p></div></div>
+          <div class="et-item"><div class="et-marker"></div><div class="et-card"><span class="et-period">2020 – 2021</span><h4>GSEB (XII) — Science Stream</h4><p class="et-institute">Brilliant High School</p><p class="et-loc"><i class="fas fa-map-marker-alt"></i> Jamnagar, Gujarat</p><p class="et-score">Score: <strong>55.4%</strong></p></div></div>
+          <div class="et-item"><div class="et-marker"></div><div class="et-card"><span class="et-period">2019 – 2020</span><h4>GSEB (X)</h4><p class="et-institute">Brilliant High School</p><p class="et-loc"><i class="fas fa-map-marker-alt"></i> Jamnagar, Gujarat</p><p class="et-score">Score: <strong>65.5%</strong></p></div></div>
+        </div>
+      </div>
+      <div class="cert-col reveal-r">
+        <h3 class="edu-col-heading"><i class="fas fa-certificate"></i> Certifications</h3>
+        <div class="cert-cards">
+          <div class="cert-card"><div class="cc-ico net-ico"><i class="fas fa-network-wired"></i></div><div class="cc-body"><h4>Introduction to Networks</h4><p>Cisco Networking Academy · Switching, Routing &amp; Wireless</p></div></div>
+          <div class="cert-card"><div class="cc-ico aws-ico"><i class="fab fa-aws"></i></div><div class="cc-body"><h4>AWS Cloud Foundations</h4><p>AWS Academy · EC2, S3, Lambda, RDS</p></div></div>
+          <div class="cert-card"><div class="cc-ico py-ico"><i class="fab fa-python"></i></div><div class="cc-body"><h4>Python Data Structures</h4><p>Coursera · University of Michigan</p></div></div>
+          <div class="cert-card"><div class="cc-ico db-ico"><i class="fas fa-database"></i></div><div class="cc-body"><h4>Database Programming with SQL</h4><p>Oracle Academy</p></div></div>
+        </div>
+        <h3 class="edu-col-heading mt-gap"><i class="fas fa-star"></i> Activities &amp; Interests</h3>
+        <div class="act-tags">
+          <span><i class="fas fa-microchip"></i> Circuitology Club</span>
+          <span><i class="fas fa-baseball"></i> Cricket</span>
+          <span><i class="fas fa-music"></i> Music</span>
+          <span><i class="fas fa-laptop-code"></i> Emerging Tech</span>
+          <span><i class="fas fa-users"></i> Team Activities</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ████ CONTACT ████ -->
+<section id="contact" class="contact sec-pad">
+  <div class="container">
+    <div class="sec-eyebrow reveal">Get In Touch</div>
+    <h2 class="sec-title reveal">Let's <em>Connect</em></h2>
+    <div class="contact-layout">
+      <div class="ct-left reveal-l">
+        <p class="body-p">I'm actively looking for full-time roles and freelance opportunities. Whether you have a project in mind or just want to say hello — reach out anytime!</p>
+        <div class="ct-info-cards">
+          <a href="mailto:nishitchauhan2408@gmail.com" class="ct-card"><div class="ctc-ico"><i class="fas fa-envelope"></i></div><div><span class="ctc-l">Email</span><span class="ctc-v">nishitchauhan2408@gmail.com</span></div></a>
+          <a href="tel:+918128223344" class="ct-card"><div class="ctc-ico"><i class="fas fa-phone"></i></div><div><span class="ctc-l">Phone</span><span class="ctc-v">+91 8128223344</span></div></a>
+          <a href="https://linkedin.com/in/nishit-chauhan-331727278/" target="_blank" class="ct-card"><div class="ctc-ico"><i class="fab fa-linkedin"></i></div><div><span class="ctc-l">LinkedIn</span><span class="ctc-v">nishit-chauhan-331727278</span></div></a>
+          <a href="https://github.com/nishitchauhan" target="_blank" class="ct-card"><div class="ctc-ico"><i class="fab fa-github"></i></div><div><span class="ctc-l">GitHub</span><span class="ctc-v">github.com/nishitchauhan</span></div></a>
+        </div>
+      </div>
+      <div class="ct-right reveal-r">
+        <form class="ct-form" id="ctForm" novalidate>
+          <div class="cf-row-2">
+            <div class="cf-field"><label for="cf-name">Name</label><input id="cf-name" type="text" name="name" placeholder="John Doe" required autocomplete="name"/></div>
+            <div class="cf-field"><label for="cf-email">Email</label><input id="cf-email" type="email" name="email" placeholder="john@example.com" required autocomplete="email"/></div>
+          </div>
+          <div class="cf-field"><label for="cf-subject">Subject</label><input id="cf-subject" type="text" name="subject" placeholder="Job Opportunity / Project Inquiry" required/></div>
+          <div class="cf-field"><label for="cf-msg">Message</label><textarea id="cf-msg" name="message" rows="5" placeholder="Tell me about your project or opportunity..." required></textarea></div>
+          <button type="submit" class="cf-submit" id="cfSubmit">
+            <span class="cfs-text">Send Message</span>
+            <span class="cfs-icon"><i class="fas fa-paper-plane"></i></span>
+            <span class="cfs-load" style="display:none"><i class="fas fa-spinner fa-spin"></i></span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ████ FOOTER ████ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-row">
+      <a href="#home" class="ft-logo">NC<span>.</span></a>
+      <p class="ft-text">© 2025 Nishit Chauhan · All rights reserved.</p>
+      <div class="ft-social">
+        <a href="https://github.com/nishitchauhan" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/nishit-chauhan-331727278/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.instagram.com/nishit_chauhan_97/" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>(function(){try{emailjs.init("U3eMRXs9xU-xLhpat");}catch(e){}})();</script>
+<script src="script.js"></script>
 </body>
 </html>
