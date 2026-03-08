@@ -1,13 +1,58 @@
 'use strict';
 
-/* ── THEME (navbar + in-menu toggle) ── */
+/* ══════════════════════════════════════════════════════════════════
+   ✉  HOW TO ACTIVATE THE CONTACT FORM (5 minutes, completely FREE)
+   ──────────────────────────────────────────────────────────────────
+   This form uses EmailJS — sends directly to nishitchauhan2408@gmail.com
+   with ZERO backend / ZERO server needed.
+
+   STEP 1 — Create free account
+     → https://www.emailjs.com  (free plan: 200 emails/month)
+
+   STEP 2 — Add Gmail service
+     Dashboard → Email Services → Add New Service
+     → Choose Gmail → Connect your nishitchauhan2408@gmail.com
+     → Copy the Service ID  (looks like: service_xxxxxxx)
+     → Paste it as EMAILJS_SERVICE_ID below
+
+   STEP 3 — Create email template
+     Dashboard → Email Templates → Create New Template
+     Set template exactly like this:
+     ─────────────────────────────────────────────
+     Subject:  [Portfolio] {{subject}}
+     Body:
+       New message from your portfolio website!
+
+       Name:    {{from_name}}
+       Email:   {{from_email}}
+       Subject: {{subject}}
+
+       Message:
+       {{message}}
+     ─────────────────────────────────────────────
+     Set "To Email" → nishitchauhan2408@gmail.com
+     Save → Copy the Template ID  (looks like: template_xxxxxxx)
+     → Paste it as EMAILJS_TEMPLATE_ID below
+
+   STEP 4 — Get your Public Key
+     Dashboard → Account → General → Public Key
+     (looks like: xxxxxxxxxxxxxxxxxxxxxx)
+     → Paste it as EMAILJS_PUBLIC_KEY below
+
+   STEP 5 — Done! Test the form.
+══════════════════════════════════════════════════════════════════ */
+
+const EMAILJS_SERVICE_ID  = 'service_b0penph';      // ← Your EmailJS Service ID
+const EMAILJS_TEMPLATE_ID = 'template_phi6soj';     // ← Your EmailJS Template ID
+const EMAILJS_PUBLIC_KEY  = 'U3eMRXs9xU-xLhpat';   // ← Your EmailJS Public Key
+
+/* ── THEME ── */
 (function () {
   const html    = document.documentElement;
   const navBtn  = document.getElementById('themeBtn');
   const menuBtn = document.getElementById('mmThemeBtn');
   const saved   = localStorage.getItem('nc-theme');
   if (saved) html.setAttribute('data-theme', saved);
-
   function toggle() {
     const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
@@ -23,13 +68,12 @@
   const navLinks = document.querySelectorAll('.nl');
   const mobLinks = document.querySelectorAll('.mm-link');
   const secs     = document.querySelectorAll('section[id]');
-
   const onScroll = () => {
     nav.classList.toggle('stuck', window.scrollY > 40);
     let cur = '';
     secs.forEach(s => { if (window.scrollY >= s.offsetTop - 110) cur = s.id; });
     navLinks.forEach(i => i.classList.toggle('active', i.getAttribute('href') === '#' + cur));
-    mobLinks.forEach(i => i.classList.toggle('active', i.getAttribute('href') === '#' + cur));
+    mobLinks.forEach(i => i.classList.toggle('active',  i.getAttribute('href') === '#' + cur));
   };
   window.addEventListener('scroll', onScroll, { passive: true });
 })();
@@ -44,97 +88,52 @@
   const ctaBtn = document.getElementById('mmCtaBtn');
 
   const open = () => {
-    menu.classList.add('open');
-    ovl.classList.add('show');
-    burger.classList.add('open');
-    burger.setAttribute('aria-expanded', 'true');
+    menu.classList.add('open'); ovl.classList.add('show');
+    burger.classList.add('open'); burger.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-    // stagger link animation
     links.forEach((l, i) => {
-      l.style.opacity = '0';
-      l.style.transform = 'translateX(-16px)';
+      l.style.opacity = '0'; l.style.transform = 'translateX(-16px)';
       setTimeout(() => {
         l.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-        l.style.opacity = '1';
-        l.style.transform = 'translateX(0)';
+        l.style.opacity = '1'; l.style.transform = 'translateX(0)';
       }, 100 + i * 50);
     });
   };
-
   const close = () => {
-    menu.classList.remove('open');
-    ovl.classList.remove('show');
-    burger.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('open'); ovl.classList.remove('show');
+    burger.classList.remove('open'); burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
   };
-
-  burger.addEventListener('click', () => menu.classList.contains('open') ? close() : open());
-  ovl.addEventListener('click', close);
-  cls.addEventListener('click', close);
+  if (burger) burger.addEventListener('click', () => menu.classList.contains('open') ? close() : open());
+  if (ovl)    ovl.addEventListener('click', close);
+  if (cls)    cls.addEventListener('click', close);
   links.forEach(l => l.addEventListener('click', close));
-
-  // Close menu when CTA (Hire Me) is clicked and scroll to contact
-  if (ctaBtn) {
-    ctaBtn.addEventListener('click', (e) => {
-      close();
-    });
-  }
-
+  if (ctaBtn) ctaBtn.addEventListener('click', close);
   window.addEventListener('resize', () => { if (window.innerWidth > 900) close(); });
 })();
 
 /* ── PROFILE PHOTO UPLOAD ── */
 (function () {
-  const wrap     = document.getElementById('mmAvatarWrap');
-  const input    = document.getElementById('mmAvatarInput');
-  const img      = document.getElementById('mmAvatarImg');
+  const wrap = document.getElementById('mmAvatarWrap');
+  const input = document.getElementById('mmAvatarInput');
+  const img = document.getElementById('mmAvatarImg');
   const initials = document.getElementById('mmAvatarInitials');
-
   if (!wrap || !input || !img || !initials) return;
-
-  // Load saved photo from localStorage
-  const savedPhoto = localStorage.getItem('nc-profile-photo');
-  if (savedPhoto) {
-    img.src = savedPhoto;
-    img.style.display = 'block';
-    initials.style.opacity = '0';
-  }
-
-  // Click avatar to trigger file input
+  const saved = localStorage.getItem('nc-profile-photo');
+  if (saved) { img.src = saved; img.style.display = 'block'; initials.style.opacity = '0'; }
   wrap.addEventListener('click', () => input.click());
-
-  // Handle file selection
-  input.addEventListener('change', (e) => {
+  input.addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      showToast('Please select an image file.', 'err');
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      showToast('Image must be under 5MB.', 'err');
-      return;
-    }
-
+    if (!file.type.startsWith('image/')) { showToast('Please select an image file.', 'err'); return; }
+    if (file.size > 5242880) { showToast('Image must be under 5MB.', 'err'); return; }
     const reader = new FileReader();
-    reader.onload = (ev) => {
-      const dataUrl = ev.target.result;
-      img.src = dataUrl;
-      img.style.display = 'block';
-      initials.style.opacity = '0';
-
-      // Persist to localStorage for future sessions
-      try {
-        localStorage.setItem('nc-profile-photo', dataUrl);
-      } catch (err) {
-        // Storage full — still show in session
-        console.warn('Could not save photo to localStorage:', err);
-      }
-      showToast('Profile photo updated! ✓', 'ok');
+    reader.onload = ev => {
+      img.src = ev.target.result; img.style.display = 'block'; initials.style.opacity = '0';
+      try { localStorage.setItem('nc-profile-photo', ev.target.result); } catch (e) {}
+      showToast('Profile photo updated ✓', 'ok');
     };
     reader.readAsDataURL(file);
-    // Reset input so same file can be selected again
     input.value = '';
   });
 })();
@@ -145,10 +144,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const h = this.getAttribute('href');
     if (h === '#') return;
     const t = document.querySelector(h);
-    if (t) {
-      e.preventDefault();
-      window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 72, behavior: 'smooth' });
-    }
+    if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 72, behavior: 'smooth' }); }
   });
 });
 
@@ -157,20 +153,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   const el = document.getElementById('twWord');
   if (!el) return;
   const words = ['Flutter Apps', 'Mobile Apps', 'REST APIs', 'Web Apps', 'Full-Stack Apps'];
-  let wi = 0, ci = 0, deleting = false, speed = 120;
-
+  let wi = 0, ci = 0, del = false, spd = 120;
   function tick() {
     const w = words[wi];
-    if (!deleting) {
-      el.textContent = w.slice(0, ++ci);
-      speed = 120;
-      if (ci === w.length) { deleting = true; speed = 2000; }
-    } else {
-      el.textContent = w.slice(0, --ci);
-      speed = 55;
-      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; speed = 350; }
-    }
-    setTimeout(tick, speed);
+    if (!del) { el.textContent = w.slice(0, ++ci); spd = 120; if (ci === w.length) { del = true; spd = 2000; } }
+    else { el.textContent = w.slice(0, --ci); spd = 55; if (ci === 0) { del = false; wi = (wi + 1) % words.length; spd = 350; } }
+    setTimeout(tick, spd);
   }
   tick();
 })();
@@ -181,18 +169,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      const el = entry.target;
-      const target = +el.dataset.to;
-      const duration = 1400;
-      const start = performance.now();
-      const step = now => {
-        const p = Math.min((now - start) / duration, 1);
-        el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
-        if (p < 1) requestAnimationFrame(step);
-        else el.textContent = target;
-      };
-      requestAnimationFrame(step);
-      obs.unobserve(el);
+      const el = entry.target, target = +el.dataset.to, start = performance.now();
+      const step = now => { const p = Math.min((now - start) / 1400, 1); el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target); if (p < 1) requestAnimationFrame(step); else el.textContent = target; };
+      requestAnimationFrame(step); obs.unobserve(el);
     });
   }, { threshold: 0.5 });
   els.forEach(e => obs.observe(e));
@@ -226,54 +205,132 @@ function showToast(msg, type = 'ok') {
   if (!t) return;
   t.textContent = msg;
   t.className = 'toast show ' + type;
-  setTimeout(() => t.classList.remove('show'), 4000);
+  setTimeout(() => t.classList.remove('show'), 5000);
 }
 
-/* ── CONTACT FORM ── */
+/* ══════════════════════════════════════════════════════════════════
+   ✉  CONTACT FORM — EmailJS
+   Sends directly to nishitchauhan2408@gmail.com
+══════════════════════════════════════════════════════════════════ */
 (function () {
-  const form = document.getElementById('ctForm');
-  const btn  = document.getElementById('cfSubmit');
+  const form   = document.getElementById('ctForm');
+  const btn    = document.getElementById('cfSubmit');
   if (!form || !btn) return;
 
-  form.addEventListener('submit', async e => {
+  const textEl = btn.querySelector('.cfs-text');
+  const iconEl = btn.querySelector('.cfs-icon');
+  const loadEl = btn.querySelector('.cfs-load');
+
+  /* Init EmailJS */
+  try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch (e) { console.warn('EmailJS init failed:', e); }
+
+  function setLoading() {
+    btn.disabled = true;
+    textEl.style.display = 'none';
+    iconEl.style.display = 'none';
+    loadEl.style.display = 'inline-flex';
+  }
+  function setSuccess() {
+    btn.classList.add('ok');
+    loadEl.style.display  = 'none';
+    textEl.textContent    = '✓ Message Sent!';
+    textEl.style.display  = 'inline-flex';
+    iconEl.style.display  = 'none';
+  }
+  function setError(label) {
+    btn.classList.add('err');
+    loadEl.style.display  = 'none';
+    textEl.textContent    = label || '✗ Failed — Try Again';
+    textEl.style.display  = 'inline-flex';
+  }
+  function resetBtn() {
+    btn.disabled = false;
+    btn.classList.remove('ok', 'err');
+    textEl.textContent   = 'Send Message';
+    textEl.style.display = 'inline-flex';
+    iconEl.style.display = 'inline-flex';
+    loadEl.style.display = 'none';
+  }
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const name    = form.querySelector('[name="name"]').value.trim();
     const email   = form.querySelector('[name="email"]').value.trim();
     const subject = form.querySelector('[name="subject"]').value.trim();
     const message = form.querySelector('[name="message"]').value.trim();
 
-    if (!name || !email || !subject || !message) { showToast('Please fill in all fields.', 'err'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address.', 'err'); return; }
+    /* ── Validate ── */
+    if (!name || !email || !subject || !message) {
+      showToast('⚠ Please fill in all fields.', 'err'); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('⚠ Please enter a valid email address.', 'err'); return;
+    }
 
-    btn.disabled = true;
-    btn.querySelector('.cfs-text').style.display = 'none';
-    btn.querySelector('.cfs-icon').style.display = 'none';
-    btn.querySelector('.cfs-load').style.display = 'inline-flex';
+    setLoading();
+
+    /* ── Template parameters sent to EmailJS ── */
+    const templateParams = {
+      from_name:  name,
+      from_email: email,
+      subject:    subject,
+      message:    message,
+      reply_to:   email,
+      to_email:   'nishitchauhan2408@gmail.com',
+    };
 
     try {
-      await emailjs.send('service_c7r06qu', 'template_phi6soj', { from_name: name, from_email: email, subject, message });
-      btn.classList.add('ok');
-      btn.querySelector('.cfs-text').textContent = '✓ Sent!';
-      btn.querySelector('.cfs-text').style.display = 'inline-flex';
-      btn.querySelector('.cfs-load').style.display = 'none';
-      showToast("Message sent! I'll get back to you soon 🎉", 'ok');
-      form.reset();
-      setTimeout(() => {
-        btn.disabled = false; btn.classList.remove('ok');
-        btn.querySelector('.cfs-text').textContent = 'Send Message';
-        btn.querySelector('.cfs-icon').style.display = 'inline-flex';
-      }, 3200);
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
+
+      if (response.status === 200) {
+        setSuccess();
+        showToast("✅ Message sent! I'll get back to you soon.", 'ok');
+        form.reset();
+        setTimeout(resetBtn, 3500);
+      } else {
+        throw new Error('EmailJS status: ' + response.status);
+      }
+
     } catch (err) {
-      btn.classList.add('err');
-      btn.querySelector('.cfs-text').textContent = 'Failed — Try Again';
-      btn.querySelector('.cfs-text').style.display = 'inline-flex';
-      btn.querySelector('.cfs-load').style.display = 'none';
-      showToast('Could not send. Email directly: nishitchauhan2408@gmail.com', 'err');
-      setTimeout(() => {
-        btn.disabled = false; btn.classList.remove('err');
-        btn.querySelector('.cfs-text').textContent = 'Send Message';
-        btn.querySelector('.cfs-icon').style.display = 'inline-flex';
-      }, 3200);
+      console.error('EmailJS Error:', err);
+
+      /* ── Smart fallback: open pre-filled Gmail compose ── */
+      const gmailURL = 'https://mail.google.com/mail/?view=cm&fs=1' +
+        '&to=nishitchauhan2408%40gmail.com' +
+        '&su=' + encodeURIComponent('[Portfolio] ' + subject) +
+        '&body=' + encodeURIComponent(
+          'Name: ' + name + '\n' +
+          'Email: ' + email + '\n\n' +
+          message
+        );
+
+      /* Also build a regular mailto fallback */
+      const mailtoURL = 'mailto:nishitchauhan2408@gmail.com' +
+        '?subject=' + encodeURIComponent('[Portfolio] ' + subject) +
+        '&body='    + encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message);
+
+      setError('✗ Send Failed');
+      showToast('Send failed — tap here to email directly', 'err');
+
+      /* Make toast clickable → opens Gmail */
+      const toast = document.getElementById('toast');
+      if (toast) {
+        toast.style.cursor = 'pointer';
+        const once = () => {
+          /* Try Gmail web first, fallback to mailto */
+          const win = window.open(gmailURL, '_blank');
+          if (!win) window.location.href = mailtoURL;
+          toast.style.cursor = '';
+          toast.removeEventListener('click', once);
+        };
+        toast.addEventListener('click', once);
+      }
+      setTimeout(resetBtn, 4000);
     }
   });
 })();
