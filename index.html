@@ -74,7 +74,6 @@
       <button class="mob-close" id="mobClose"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="mob-id">
-
       <div class="mob-ava" id="mobAva" title="Tap to change photo">
         <div class="mob-ava-ring-outer"></div>
         <div class="mob-ava-ring-gap"></div>
@@ -122,7 +121,6 @@
 
   <!-- ═══ HERO ═══ -->
   <section id="home" class="hero container">
-    <!-- animated vertical lines -->
     <div class="hero-lines">
       <div class="hero-line"></div>
       <div class="hero-line"></div>
@@ -155,16 +153,16 @@
 
       <div class="hero-stats">
         <div class="hs">
-          <div class="hs-val" data-to="1">0</div>
-          <div class="hs-lbl">Yr Exp</div>
-        </div>
-        <div class="hs">
           <div class="hs-val" data-to="5">0</div>
           <div class="hs-lbl">Projects</div>
         </div>
         <div class="hs">
           <div class="hs-val" data-to="4">0</div>
-          <div class="hs-lbl">Certs</div>
+          <div class="hs-lbl">Certificates</div>
+        </div>
+        <div class="hs">
+          <div class="hs-val" id="heroViewCount">—</div>
+          <div class="hs-lbl">Views</div>
         </div>
       </div>
     </div>
@@ -179,7 +177,6 @@
             <div class="hc-ava-gap"></div>
             <div class="hc-ava-inner">
               <span class="hc-ava-ini" id="hcIni">NC</span>
-              <!-- To add your photo: replace comment with <img class="hc-ava-img" src="photo.jpg" alt="Nishit"> -->
             </div>
           </div>
 
@@ -192,10 +189,11 @@
             <span class="hc-tag">MERN</span>
           </div>
 
+          <!-- FIXED: "1+ Yr Exp" removed, replaced with "< 6 Mo" -->
           <div class="hc-stats">
             <div class="hc-st"><strong>5+</strong><span>Projects</span></div>
             <div class="hc-st"><strong>4</strong><span>Certs</span></div>
-            <div class="hc-st"><strong>1+</strong><span>Yr Exp</span></div>
+            <div class="hc-st"><strong>&lt;6 Mo</strong><span>Exp</span></div>
           </div>
 
           <div class="hc-avail"><span class="hc-avail-dot"></span> Open to Work</div>
@@ -289,7 +287,7 @@
             </div>
             <div class="num">
               <div class="num-n" data-to="1">0</div>
-              <div class="num-l">App Contributed</div>
+              <div class="num-l">App on Play Store</div>
             </div>
           </div>
           <div class="acard">
@@ -472,59 +470,24 @@
       <h2 class="sec-title rv">Things I've <em>built.</em></h2>
       <div class="projects-grid">
 
-        <!-- <article class="pj wide rv-u">
+        <article class="pj wide rv-u">
           <div class="pj-img">
-            <div class="pj-ph pj-ph-flutter"><i class="fas fa-mobile-alt"></i></div>
-            <div class="pj-grad"></div><span class="pj-badge">Flutter · Live</span>
+            <img src="images/MySplitly.png" alt="MySplitly App" class="pj-real-img">
+            <div class="pj-grad"></div>
+            <span class="pj-badge">Flutter · Live</span>
           </div>
           <div class="pj-body">
             <div class="pj-meta"><span class="pj-cat">Mobile App</span><span class="pj-yr">2025</span></div>
             <div class="pj-name">MySplitly</div>
             <p class="pj-desc">A bill-splitting Android app available on Google Play Store, built as part of my work at
               <strong>Mehta Websolution</strong>. I contributed to Flutter UI development and feature implementation
-              using Dart and Material Design.</p>
-            <div class="pj-techs"><span class="pj-tech">Flutter</span><span class="pj-tech">Dart</span><span
-                class="pj-tech">Material UI</span><span class="pj-tech">Android</span></div>
-            <div class="pj-acts"><a href="https://play.google.com/store/apps/details?id=com.mw.splitly" target="_blank"
-                rel="noopener" class="pj-a1"><i class="fab fa-google-play"></i> Play Store</a></div>
-          </div>
-        </article> -->
-        <article class="pj wide rv-u">
-          <div class="pj-img">
-
-            <img src="images/MySplitly.png" alt="MySplitly App" class="pj-real-img">
-
-            <div class="pj-grad"></div>
-            <span class="pj-badge">Flutter · Live</span>
-
-          </div>
-
-          <div class="pj-body">
-            <div class="pj-meta">
-              <span class="pj-cat">Mobile App</span>
-              <span class="pj-yr">2025</span>
-            </div>
-
-            <div class="pj-name">MySplitly</div>
-
-            <p class="pj-desc">
-              A bill-splitting Android app available on Google Play Store, built as part of my work at
-              <strong>Mehta Websolution</strong>. I contributed to Flutter UI development and feature implementation
               using Dart and Material Design.
             </p>
-
-            <div class="pj-techs">
-              <span class="pj-tech">Flutter</span>
-              <span class="pj-tech">Dart</span>
-              <span class="pj-tech">Material UI</span>
-              <span class="pj-tech">Android</span>
-            </div>
-
+            <div class="pj-techs"><span class="pj-tech">Flutter</span><span class="pj-tech">Dart</span><span
+                class="pj-tech">Material UI</span><span class="pj-tech">Android</span></div>
             <div class="pj-acts">
               <a href="https://play.google.com/store/apps/details?id=com.mw.splitly" target="_blank" rel="noopener"
-                class="pj-a1">
-                <i class="fab fa-google-play"></i> Play Store
-              </a>
+                class="pj-a1"><i class="fab fa-google-play"></i> Play Store</a>
             </div>
           </div>
         </article>
@@ -561,7 +524,7 @@
         </article>
 
         <article class="pj rv-u">
-          <div class="pj-img"><img src="images//lost-found-day.jpg" alt="Lost Found" loading="lazy" />
+          <div class="pj-img"><img src="images/lost-found-day.jpg" alt="Lost Found" loading="lazy" />
             <div class="pj-grad"></div><span class="pj-badge">PHP · MySQL</span>
           </div>
           <div class="pj-body">
@@ -578,39 +541,19 @@
 
         <article class="pj rv-u">
           <div class="pj-img">
-
             <img src="images/simcard.jpg" alt="SIM Card Manager Project" class="pj-real-img">
-
             <div class="pj-grad"></div>
             <span class="pj-badge">C++</span>
-
           </div>
-
           <div class="pj-body">
-            <div class="pj-meta">
-              <span class="pj-cat">Console App</span>
-              <span class="pj-yr">2023</span>
-            </div>
-
+            <div class="pj-meta"><span class="pj-cat">Console App</span><span class="pj-yr">2023</span></div>
             <div class="pj-name">SIM Card Manager</div>
-
-            <p class="pj-desc">
-              Console C++ application for managing SIM card sales, recharges, and customer records
-              using OOP and file I/O.
-            </p>
-
-            <div class="pj-techs">
-              <span class="pj-tech">C++</span>
-              <span class="pj-tech">OOP</span>
-              <span class="pj-tech">File I/O</span>
-            </div>
-
-            <div class="pj-acts">
-              <a href="https://github.com/Nishit240875" target="_blank" class="pj-a2">
-                <i class="fab fa-github"></i> GitHub
-              </a>
-            </div>
-
+            <p class="pj-desc">Console C++ application for managing SIM card sales, recharges, and customer records
+              using OOP and file I/O.</p>
+            <div class="pj-techs"><span class="pj-tech">C++</span><span class="pj-tech">OOP</span><span
+                class="pj-tech">File I/O</span></div>
+            <div class="pj-acts"><a href="https://github.com/Nishit240875" target="_blank" class="pj-a2"><i
+                  class="fab fa-github"></i> GitHub</a></div>
           </div>
         </article>
 
@@ -744,39 +687,15 @@
             </a>
           </div>
         </div>
-        <!-- <div class="rv-r">
-          <div class="ct-form-box">
-            <form id="ctForm" novalidate>
-              <input type="text" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
-              <div class="cf-row">
-                <div class="cf-f"><label for="cfName">Name</label><input id="cfName" type="text" name="name"
-                    placeholder="Your name" required autocomplete="name" /></div>
-                <div class="cf-f"><label for="cfEmail">Email</label><input id="cfEmail" type="email" name="email"
-                    placeholder="your@email.com" required autocomplete="email" /></div>
-              </div>
-              <div class="cf-f"><label for="cfSub">Subject</label><input id="cfSub" type="text" name="subject"
-                  placeholder="Freelance Project" required /></div>
-              <div class="cf-f"><label for="cfMsg">Message</label><textarea id="cfMsg" name="message" rows="5"
-                  placeholder="Tell me about your project or idea..." required></textarea></div>
-              <button type="submit" class="cf-sub-btn" id="cfBtn">
-                <span id="cfBtnTxt">Send Message</span>
-                <span id="cfBtnLoad" style="display:none"><i class="fas fa-spinner fa-spin"></i></span>
-              </button>
-            </form>
-          </div>
-        </div> -->
 
         <div class="ct-form-box rv-r">
-
           <div class="cf-head">
             <div class="cf-head-ico"><i class="fas fa-paper-plane"></i></div>
             <div class="cf-head-txt">
               <div class="cf-head-title">Let's Connect</div>
               <div class="cf-head-sub">Drop me a message</div>
             </div>
-            <div class="cf-head-badge">
-              <span></span> Responding
-            </div>
+            <div class="cf-head-badge"><span></span> Responding</div>
           </div>
           <div class="cf-body">
             <form id="ctForm" novalidate>

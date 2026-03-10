@@ -17,141 +17,175 @@ window.addEventListener('load', () => {
   }, 900);
 });
 
-/* ─── VISIT COUNTER + POPUP ─── */
+/* ─── THEME TOGGLE ─── */
 (function () {
-  const KEY = 'nc_v6_visits';
-  const el = $('#vpNum');
-  if (!el) return;
-  let v = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
-  try { localStorage.setItem(KEY, v); } catch (e) { }
-  const from = Math.max(0, v - Math.min(v, 30));
-  const t0 = performance.now();
-  (function anim(now) {
-    const p = Math.min((now - t0) / 1200, 1);
-    const e = 1 - (1 - p) * (1 - p) * (1 - p);
-    el.textContent = Math.round(from + (v - from) * e).toLocaleString();
-    if (p < 1) requestAnimationFrame(anim);
-    else el.textContent = v.toLocaleString();
-  })(performance.now());
-
-  // Build popup elements once
-  const ovl = document.createElement('div');
-  ovl.className = 'vp-popup-ovl';
-  document.body.appendChild(ovl);
-
-  const popup = document.createElement('div');
-  popup.className = 'vp-popup';
-  popup.innerHTML = `
-    <div class="vp-popup-inner">
-      <span class="vp-popup-emoji">👀</span>
-      <span class="vp-popup-count" id="vpPopCount">${v.toLocaleString()}</span>
-      <span class="vp-popup-label">Total Views</span>
-      <span class="vp-popup-msg">You're visit #${v.toLocaleString()} on this portfolio.<br>Thanks for stopping by!</span>
-      <div class="vp-popup-bar"><div class="vp-popup-bar-fill" id="vpBarFill"></div></div>
-    </div>`;
-  document.body.appendChild(popup);
-
-  let closeTimer;
-  const openPopup = () => {
-    // refresh count in case anim finished
-    const countEl = $('#vpPopCount');
-    if (countEl) countEl.textContent = v.toLocaleString();
-    // re-trigger bar animation
-    const fill = $('#vpBarFill');
-    if (fill) { fill.style.animation = 'none'; void fill.offsetWidth; fill.style.animation = 'barDrain 2s linear forwards'; }
-
-    ovl.classList.add('show');
-    popup.classList.add('show');
-    clearTimeout(closeTimer);
-    closeTimer = setTimeout(closePopup, 2000);
-  };
-  const closePopup = () => {
-    popup.classList.remove('show');
-    ovl.classList.remove('show');
-  };
-
-  const pill = $('.visit-pill');
-  on(pill, 'click', openPopup);
-  on(ovl, 'click', closePopup);
-})();
-
-/* ─── CUSTOM CURSOR — GPU-accelerated via transform ─── */
-(function () {
-  if (window.matchMedia('(pointer:coarse)').matches) return;
-  const outer = $('#cOuter'), inner = $('#cInner');
-  if (!outer || !inner) return;
-
-  let mx = -300, my = -300, rx = -300, ry = -300;
-  // Use transform instead of left/top for GPU compositing
-  outer.style.left = '0px'; outer.style.top = '0px';
-  inner.style.left = '0px'; inner.style.top = '0px';
-
-  on(document, 'mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    inner.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
-  }, { passive: true });
-
-  (function loop() {
-    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-    outer.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
-    requestAnimationFrame(loop);
-  })();
-
-  // Remove left/top from elements, use transform instead
-  const outerEl = outer.querySelector('.c-outer-el');
-  const innerEl = inner.querySelector('.c-inner-el');
-  if (outerEl) { outerEl.style.left = ''; outerEl.style.top = ''; }
-  if (innerEl) { innerEl.style.left = ''; innerEl.style.top = ''; }
-
-  $$('a, button, .hc-tag, .sk-t, .tag, .act, .soc-btn, .ctlink, .cert, .achip, .num, .tl-c').forEach(el => {
-    on(el, 'mouseenter', () => outer.classList.add('hov'));
-    on(el, 'mouseleave', () => outer.classList.remove('hov'));
-  });
-  $$('.cta-primary, .hire-btn, .mob-cta, .pj-a1').forEach(el => {
-    on(el, 'mouseenter', () => { outer.classList.remove('hov'); outer.classList.add('link'); });
-    on(el, 'mouseleave', () => outer.classList.remove('link'));
-  });
-})();
-
-/* ─── THEME ─── */
-(function () {
-  const html = document.documentElement;
   const btn = $('#themeBtn');
   const ico = $('#themeIco');
-  const saved = localStorage.getItem('nc-theme6');
-  if (saved) html.setAttribute('data-theme', saved);
-  const sync = () => { const d = html.dataset.theme === 'dark'; if (ico) ico.textContent = d ? '🌙' : '☀️'; };
-  sync();
+  const root = document.documentElement;
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    if (ico) ico.textContent = theme === 'dark' ? '🌙' : '☀️';
+    try { localStorage.setItem('nc-theme', theme); } catch (e) { }
+  }
+
+  // restore saved theme
+  let saved = 'dark';
+  try { saved = localStorage.getItem('nc-theme') || 'dark'; } catch (e) { }
+  applyTheme(saved);
+
   on(btn, 'click', () => {
-    const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('nc-theme6', next);
-    sync();
+    const current = root.getAttribute('data-theme') || 'dark';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
   });
 })();
 
-/* ─── NAVBAR — throttled scroll ─── */
+/* ─── CUSTOM CURSOR ─── */
+(function () {
+  if (window.matchMedia('(pointer:coarse)').matches) return;
+  const outer = $('#cOuter');
+  const inner = $('#cInner');
+  if (!outer || !inner) return;
+
+  let mx = -100, my = -100, ox = -100, oy = -100;
+  let raf;
+
+  on(document, 'mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+  (function loop() {
+    ox += (mx - ox) * 0.12;
+    oy += (my - oy) * 0.12;
+    outer.style.transform = `translate(${ox}px,${oy}px)`;
+    inner.style.transform = `translate(${mx}px,${my}px)`;
+    raf = requestAnimationFrame(loop);
+  })();
+
+  // hover state on links / buttons
+  $$('a, button, [role="button"], input, textarea, .pj, .sk, .cert, .exp-card').forEach(el => {
+    on(el, 'mouseenter', () => { outer.classList.add('hov'); inner.classList.add('hov'); });
+    on(el, 'mouseleave', () => { outer.classList.remove('hov'); inner.classList.remove('hov'); });
+  });
+
+  on(document, 'mouseleave', () => { outer.style.opacity = '0'; inner.style.opacity = '0'; });
+  on(document, 'mouseenter', () => { outer.style.opacity = ''; inner.style.opacity = ''; });
+})();
+
+/* ─── NAVBAR — scroll shrink + active link ─── */
 (function () {
   const nav = $('#nav');
-  const nls = $$('.nl');
-  const mls = $$('.mob-nl');
-  const secs = $$('section[id]');
-  let ticking = false;
+  const links = $$('.nl');
+  const sections = $$('section[id]');
 
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const sy = window.scrollY;
-      nav.classList.toggle('scrolled', sy > 50);
-      let cur = '';
-      secs.forEach(s => { if (sy >= s.offsetTop - 140) cur = s.id; });
-      nls.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
-      mls.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
-      ticking = false;
+  function onScroll() {
+    // shrink navbar on scroll
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 60);
+
+    // highlight active nav link
+    let current = '';
+    sections.forEach(sec => {
+      const top = sec.getBoundingClientRect().top;
+      if (top <= 120) current = sec.id;
     });
-  };
+    links.forEach(l => {
+      const href = l.getAttribute('href');
+      l.classList.toggle('active', href === '#' + current);
+    });
+  }
+
   on(window, 'scroll', onScroll, { passive: true });
+  onScroll(); // run once on load
+})();
+
+/* ─── VISIT COUNTER ─── */
+(function () {
+  const pillEl = $('#vpNum');
+  const heroEl = $('#heroViewCount');
+
+  const STORAGE_KEY = 'nc_views_v1';
+  const LAST_KEY = 'nc_last_visit';
+
+  function getLocal() {
+    try { return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10); } catch (e) { return 0; }
+  }
+  function setLocal(n) {
+    try { localStorage.setItem(STORAGE_KEY, n); } catch (e) { }
+  }
+  function isNewSession() {
+    try {
+      const last = parseInt(localStorage.getItem(LAST_KEY) || '0', 10);
+      const now = Date.now();
+      if (now - last > 30 * 60 * 1000) {
+        localStorage.setItem(LAST_KEY, now);
+        return true;
+      }
+      return false;
+    } catch (e) { return true; }
+  }
+
+  function animateCount(el, target, from) {
+    if (!el) return;
+    from = Math.max(0, from);
+    const t0 = performance.now();
+    (function anim(now) {
+      const p = Math.min((now - t0) / 1200, 1);
+      const ease = 1 - (1 - p) * (1 - p) * (1 - p);
+      el.textContent = Math.round(from + (target - from) * ease).toLocaleString();
+      if (p < 1) requestAnimationFrame(anim);
+      else el.textContent = target.toLocaleString();
+    })(performance.now());
+  }
+
+  function buildPopup(count) {
+    document.querySelectorAll('.vp-popup,.vp-popup-ovl').forEach(e => e.remove());
+
+    const ovl = document.createElement('div');
+    ovl.className = 'vp-popup-ovl';
+    document.body.appendChild(ovl);
+
+    const popup = document.createElement('div');
+    popup.className = 'vp-popup';
+    const display = count > 0 ? count.toLocaleString() : '—';
+    popup.innerHTML = `
+      <div class="vp-popup-inner">
+        <span class="vp-popup-emoji">👀</span>
+        <span class="vp-popup-count">${display}</span>
+        <span class="vp-popup-label">Total Views</span>
+        <span class="vp-popup-msg">You're visit #${display} on this portfolio.<br>Thanks for stopping by!</span>
+        <div class="vp-popup-bar"><div class="vp-popup-bar-fill" id="vpBarFill"></div></div>
+      </div>`;
+    document.body.appendChild(popup);
+
+    let timer;
+    const open = () => {
+      const fill = $('#vpBarFill');
+      if (fill) { fill.style.animation = 'none'; void fill.offsetWidth; fill.style.animation = 'barDrain 2s linear forwards'; }
+      ovl.classList.add('show'); popup.classList.add('show');
+      clearTimeout(timer); timer = setTimeout(close, 2000);
+    };
+    const close = () => { popup.classList.remove('show'); ovl.classList.remove('show'); };
+    on($('.visit-pill'), 'click', open);
+    on(ovl, 'click', close);
+  }
+
+  function applyCount(n) {
+    animateCount(pillEl, n, Math.max(0, n - 30));
+    animateCount(heroEl, n, Math.max(0, n - 30));
+    buildPopup(n);
+  }
+
+  const local = getLocal();
+  const isNew = isNewSession();
+  const newLocal = isNew ? local + 1 : local;
+  if (newLocal > 0) { setLocal(newLocal); applyCount(newLocal); }
+
+  const WORKER_URL = 'https://nishit-views.nishitchauhan2408.workers.dev';
+  fetch(WORKER_URL, { method: isNew ? 'POST' : 'GET', cache: 'no-store' })
+    .then(r => r.json())
+    .then(d => {
+      const n = d.count || 0;
+      if (n > 0) { setLocal(n); applyCount(n); }
+    })
+    .catch(() => { if (newLocal === 0) applyCount(1); });
 })();
 
 /* ─── MOBILE MENU ─── */
@@ -299,7 +333,7 @@ $$('a[href^="#"]').forEach(a => {
   $$('.rv, .rv-l, .rv-r, .rv-u').forEach(e => obs.observe(e));
 })();
 
-/* ─── HERO CARD 3D TILT — GPU optimized ─── */
+/* ─── HERO CARD 3D TILT ─── */
 (function () {
   const card = $('#hcard');
   if (!card || window.matchMedia('(pointer:coarse)').matches) return;
@@ -336,7 +370,7 @@ $$('a[href^="#"]').forEach(a => {
   });
 })();
 
-/* ─── PARALLAX HERO LINES — throttled, reduced-motion aware ─── */
+/* ─── PARALLAX HERO LINES ─── */
 (function () {
   if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
   if (window.matchMedia('(pointer:coarse)').matches) return;
@@ -377,7 +411,7 @@ function showToast(msg, type = 'ok') {
   t._timer = setTimeout(() => t.classList.remove('show'), 5000);
 }
 
-/* ─── SECTION TITLE FADE-IN (replaced heavy letter-by-letter with smooth fade-up) ─── */
+/* ─── SECTION TITLE FADE-IN ─── */
 (function () {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(({ isIntersecting, target }) => {
@@ -472,43 +506,29 @@ function launchConfetti() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles = particles.filter(p => p.alpha > 0.02);
     if (!particles.length) { canvas.remove(); return; }
-
     particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += p.gravity;
-      p.vx *= 0.985;
-      p.rotation += p.rotSpeed;
-      p.wobble += p.wobbleSpeed;
-      p.x += Math.sin(p.wobble) * 0.8;
-      p.alpha -= p.decay;
-
+      p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.vx *= 0.985;
+      p.rotation += p.rotSpeed; p.wobble += p.wobbleSpeed;
+      p.x += Math.sin(p.wobble) * 0.8; p.alpha -= p.decay;
       ctx.save();
       ctx.globalAlpha = Math.max(0, p.alpha);
       ctx.translate(p.x, p.y);
       ctx.rotate((p.rotation * Math.PI) / 180);
       ctx.fillStyle = p.color;
-
       if (p.shape === 'circle') {
-        ctx.beginPath();
-        ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2); ctx.fill();
       } else if (p.shape === 'ribbon') {
         ctx.beginPath();
         ctx.moveTo(-p.w / 2, -p.h / 2);
         ctx.bezierCurveTo(p.w * .2, -p.h, p.w * .3, p.h, p.w / 2, p.h / 2);
         ctx.bezierCurveTo(p.w * .1, p.h * .8, -p.w * .2, -p.h * .3, -p.w / 2, -p.h / 2);
         ctx.fill();
-      } else {
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-      }
+      } else { ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
       ctx.restore();
     });
     frame = requestAnimationFrame(draw);
   }
   draw();
-
-  /* Burst a second wave after 300ms for layered effect */
   setTimeout(() => {
     const burst = window.innerWidth < 600 ? 50 : 80;
     for (let i = 0; i < burst; i++) {
@@ -521,18 +541,15 @@ function launchConfetti() {
         gravity: 0.45 + Math.random() * 0.25,
         rotation: Math.random() * 360,
         rotSpeed: (Math.random() - .5) * 7,
-        w: 6 + Math.random() * 7,
-        h: 3 + Math.random() * 5,
+        w: 6 + Math.random() * 7, h: 3 + Math.random() * 5,
         color: col,
         shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
-        alpha: 1,
-        decay: 0.01 + Math.random() * 0.007,
+        alpha: 1, decay: 0.01 + Math.random() * 0.007,
         wobble: Math.random() * Math.PI * 2,
         wobbleSpeed: .06 + Math.random() * .05
       });
     }
   }, 280);
-
   setTimeout(() => { cancelAnimationFrame(frame); canvas.remove(); }, 4500);
 }
 
@@ -546,7 +563,6 @@ function launchConfetti() {
   const box = form.closest('.ct-form-box');
   let successOvl = null;
 
-  /* Build success overlay dynamically */
   function buildSuccessOvl() {
     if (successOvl) return;
     successOvl = document.createElement('div');
@@ -572,8 +588,6 @@ function launchConfetti() {
   function showSuccess() {
     buildSuccessOvl();
     requestAnimationFrame(() => successOvl.classList.add('show'));
-
-    /* Countdown 5 → 0 then auto-dismiss */
     let secs = 5;
     const cd = () => document.getElementById('cfCountdown');
     const iv = setInterval(() => {
@@ -585,7 +599,6 @@ function launchConfetti() {
   function hideSuccess() {
     if (successOvl) {
       successOvl.classList.remove('show');
-      /* Reset button after overlay fades */
       setTimeout(() => {
         btn.disabled = false; btn.classList.remove('ok');
         if (txt) { txt.textContent = 'Send Message'; txt.style.display = 'inline-flex'; }
@@ -596,7 +609,6 @@ function launchConfetti() {
 
   try { emailjs.init(EMAILJS_PUBLIC_KEY); } catch (e) { }
 
-  /* Mark a field invalid with red border + shake, clear on input */
   function setFieldError(el, hasError) {
     el.classList.toggle('cf-field-err', hasError);
     if (hasError) {
@@ -616,7 +628,6 @@ function launchConfetti() {
     const subject = subjectEl.value.trim();
     const message = messageEl.value.trim();
 
-    /* Mark all empty fields red */
     let hasError = false;
     [nameEl, emailEl, subjectEl, messageEl].forEach(el => {
       const empty = !el.value.trim();
@@ -624,13 +635,11 @@ function launchConfetti() {
       if (empty) hasError = true;
     });
 
-    /* Also mark email invalid if format is wrong */
     const emailInvalid = email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (emailInvalid) { setFieldError(emailEl, true); hasError = true; }
 
     if (hasError) {
       showToast('⚠️  Please fill in all fields first.', 'err');
-      /* Focus the first errored field */
       const first = form.querySelector('.cf-field-err');
       if (first) first.focus();
       return;
@@ -645,33 +654,21 @@ function launchConfetti() {
         from_name: name, from_email: email, subject, message, reply_to: email
       });
       if (res.status === 200) {
-        /* ✅ SUCCESS */
         btn.classList.add('ok');
         if (load) load.style.display = 'none';
         if (txt) { txt.textContent = '✓ Sent!'; txt.style.display = 'inline-flex'; }
         form.reset();
-
-        /* 🎉 Fire confetti */
         launchConfetti();
-
-        /* Show rich toast */
         showToast("🎉 Message sent! I'll reply within 24 hours.", 'ok');
-
-        /* Show in-form success overlay after short delay */
         setTimeout(showSuccess, 300);
-
       } else throw new Error();
-
     } catch (err) {
       const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=nishitchauhan2408%40gmail.com&su=${encodeURIComponent('[Portfolio] ' + subject)}&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message)}`;
-
       btn.classList.add('err');
       if (load) load.style.display = 'none';
       if (txt) { txt.textContent = '✗ Failed — Open Gmail instead'; txt.style.display = 'inline-flex'; }
-
       showToast('😔 Send failed — click to try Gmail directly', 'err');
       on($('#toast'), 'click', () => window.open(gmailURL, '_blank'), { once: true });
-
       setTimeout(() => {
         btn.disabled = false; btn.classList.remove('err');
         if (txt) { txt.textContent = 'Send Message'; txt.style.display = 'inline-flex'; }
