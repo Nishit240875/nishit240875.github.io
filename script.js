@@ -114,7 +114,7 @@ window.addEventListener('load', () => {
     try {
       const last = parseInt(localStorage.getItem(LAST_KEY) || '0', 10);
       const now = Date.now();
-      if (now - last > 30 * 60 * 1000) {
+      if (now - last > 12 * 60 * 60 * 1000) {
         localStorage.setItem(LAST_KEY, now);
         return true;
       }
