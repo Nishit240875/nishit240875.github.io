@@ -114,7 +114,7 @@ window.addEventListener('load', () => {
     try {
       const last = parseInt(localStorage.getItem(LAST_KEY) || '0', 10);
       const now = Date.now();
-      if (now - last > 12 * 60 * 60 * 1000) {
+      if (now - last > 24 * 60 * 60 * 1000) {
         localStorage.setItem(LAST_KEY, now);
         return true;
       }
@@ -675,4 +675,148 @@ function launchConfetti() {
       }, 5000);
     }
   });
+})();
+/* ============================================================
+   script.js na BILKUL END MA paste karo
+   ============================================================ */
+
+(function () {
+  'use strict';
+
+  /* ── CONFIG: tara PDF no path ── */
+  const PDF_PATH     = 'Document/Nishit_Chauhan_Resume.pdf';
+  const PDF_FILENAME = 'Nishit_Chauhan_Resume.pdf';
+
+  /* ── ELEMENTS ── */
+  const triggerBtn = document.getElementById('resumeIconBtn');
+  const popup      = document.getElementById('rdp');
+  const openBtn    = document.getElementById('rdpOpenBtn');
+  const dlBtn      = document.getElementById('rdpDlBtn');
+  const errorPanel = document.getElementById('rdpError');
+  const errDlBtn   = document.getElementById('rdpErrDl');
+  const errBackBtn = document.getElementById('rdpErrBack');
+  const toast      = document.getElementById('rdpToast');
+  const toastBar   = document.getElementById('rdpToastBar');
+
+  if (!triggerBtn || !popup) return;
+
+  let isOpen     = false;
+  let errVisible = false;
+  let toastTimer = null;
+
+  /* ── PDF VIEWER CHECK ── */
+  function hasPdfViewer() {
+    const ua = navigator.userAgent.toLowerCase();
+    if (/chrome|firefox|edg\/|safari/.test(ua)) return true;
+    if (navigator.mimeTypes) {
+      for (let i = 0; i < navigator.mimeTypes.length; i++) {
+        if (/pdf/.test(navigator.mimeTypes[i].type)) return true;
+      }
+    }
+    return false;
+  }
+
+  /* ── OPEN POPUP ── */
+  function openPopup() {
+    errorPanel.classList.remove('show');
+    errVisible = false;
+
+    popup.querySelectorAll('.rdp-btn, .rdp-footer').forEach(el => {
+      el.style.animation = 'none';
+      void el.offsetWidth;
+      el.style.animation = '';
+    });
+
+    triggerBtn.classList.add('active');
+    popup.classList.add('open');
+    isOpen = true;
+  }
+
+  /* ── CLOSE POPUP ── */
+  function closePopup() {
+    triggerBtn.classList.remove('active');
+    popup.classList.remove('open');
+    isOpen = false;
+    setTimeout(() => {
+      errorPanel.classList.remove('show');
+      errVisible = false;
+    }, 320);
+  }
+
+  /* ── TOGGLE ── */
+  function togglePopup() {
+    isOpen ? closePopup() : openPopup();
+  }
+
+  /* ── DOWNLOAD ── */
+  function triggerDownload() {
+    const a = document.createElement('a');
+    a.href     = PDF_PATH;
+    a.download = PDF_FILENAME;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => a.remove(), 300);
+  }
+
+  /* ── SUCCESS TOAST ── */
+  function showToast() {
+    toastBar.style.animation = 'none';
+    void toastBar.offsetWidth;
+    toastBar.style.animation = 'rdpToastDrain 3s linear forwards';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+
+  /* ── EVENT LISTENERS ── */
+
+  triggerBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    togglePopup();
+  });
+
+  openBtn.addEventListener('click', () => {
+    if (hasPdfViewer()) {
+      window.open(PDF_PATH, '_blank', 'noopener,noreferrer');
+      closePopup();
+    } else {
+      errorPanel.classList.add('show');
+      errVisible = true;
+    }
+  });
+
+  dlBtn.addEventListener('click', () => {
+    triggerDownload();
+    closePopup();
+    setTimeout(showToast, 280);
+  });
+
+  errDlBtn.addEventListener('click', () => {
+    triggerDownload();
+    closePopup();
+    setTimeout(showToast, 280);
+  });
+
+  errBackBtn.addEventListener('click', () => {
+    errorPanel.classList.remove('show');
+    errVisible = false;
+  });
+
+  document.addEventListener('click', e => {
+    if (isOpen && !triggerBtn.contains(e.target) && !popup.contains(e.target)) {
+      closePopup();
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape' || !isOpen) return;
+    if (errVisible) {
+      errorPanel.classList.remove('show');
+      errVisible = false;
+    } else {
+      closePopup();
+    }
+  });
+
 })();

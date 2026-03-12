@@ -5133,3 +5133,410 @@ ul {
     display: none !important;
   }
 }
+/* ============================================================
+   styles.css na BILKUL END MA paste karo (badho niche)
+   ============================================================ */
+
+/* ─── RESUME ICON BUTTON (theme-btn ni baju) ─── */
+.resume-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  cursor: pointer;
+  position: relative;
+  transition: all .3s var(--ease-spring);
+  flex-shrink: 0;
+}
+.resume-icon-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform .35s var(--ease-spring), color .2s;
+  pointer-events: none;
+}
+.resume-icon-btn:hover {
+  background: var(--surface3);
+  color: var(--text);
+  transform: scale(1.08);
+  box-shadow: var(--sh);
+}
+.resume-icon-btn.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: transparent;
+  box-shadow: 0 4px 18px rgba(0,0,0,.3);
+}
+.resume-icon-btn.active svg {
+  transform: rotate(-10deg) scale(1.05);
+}
+[data-theme="light"] .resume-icon-btn {
+  background: rgba(255,255,255,.9);
+  border-color: var(--border2);
+  box-shadow: 0 2px 8px rgba(140,120,90,.1);
+}
+[data-theme="light"] .resume-icon-btn:hover {
+  box-shadow: 0 4px 16px rgba(140,120,90,.16);
+}
+[data-theme="light"] .resume-icon-btn.active {
+  background: var(--text);
+  color: #faf8f5;
+  box-shadow: 0 4px 18px rgba(26,23,20,.25);
+}
+
+/* ─── POPUP CARD ─── */
+.rdp {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 290px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  box-shadow: var(--sh2), 0 0 60px rgba(0,0,0,.35);
+  overflow: hidden;
+  transform: scale(.88) translateY(-10px);
+  opacity: 0;
+  transition:
+    transform .4s var(--ease-spring),
+    opacity   .3s var(--ease-out);
+  pointer-events: none;
+  transform-origin: top right;
+  z-index: 2000;
+}
+.rdp::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--text3) 20%,
+    var(--text2) 50%,
+    var(--text3) 80%,
+    transparent 100%);
+  background-size: 200% 100%;
+  animation: rdpBorderSlide 3s linear infinite;
+  z-index: 1;
+}
+@keyframes rdpBorderSlide {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+[data-theme="light"] .rdp {
+  background: linear-gradient(145deg, #ffffff 0%, #f8f3ec 100%);
+  border-color: rgba(180,155,110,.28);
+  box-shadow: 0 8px 40px rgba(140,120,90,.22), 0 0 0 1px rgba(180,155,110,.14);
+}
+[data-theme="light"] .rdp::before {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(217,119,6,.3) 20%,
+    var(--amber) 50%,
+    rgba(217,119,6,.3) 80%,
+    transparent 100%);
+  background-size: 200% 100%;
+}
+.rdp.open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ─── FILE STRIP ─── */
+.rdp-file {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: 1.1rem 1.3rem .9rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+  background: var(--surface2);
+}
+[data-theme="light"] .rdp-file {
+  background: rgba(255,255,255,.55);
+  border-bottom-color: var(--border);
+}
+.rdp-file-ico {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .58rem; font-weight: 800; color: #fff;
+  letter-spacing: .03em; flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(239,68,68,.3);
+  animation: rdpPdfBreath 3.5s ease-in-out infinite;
+}
+@keyframes rdpPdfBreath {
+  0%,100% { box-shadow: 0 3px 10px rgba(239,68,68,.3); }
+  50%      { box-shadow: 0 5px 18px rgba(239,68,68,.45); }
+}
+.rdp-file-txt { flex: 1; min-width: 0; }
+.rdp-file-name {
+  font-size: .78rem; font-weight: 600; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: .12rem;
+}
+.rdp-file-meta {
+  font-size: .62rem; color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  display: flex; align-items: center; gap: .4rem;
+}
+.rdp-file-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--green); display: inline-block;
+  animation: rdpPulse 2s infinite;
+}
+@keyframes rdpPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(74,222,128,.4); }
+  50%      { box-shadow: 0 0 0 4px rgba(74,222,128,0); }
+}
+
+/* ─── ACTION BUTTONS ─── */
+.rdp-actions {
+  padding: .65rem .7rem .7rem;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  position: relative;
+  z-index: 1;
+}
+.rdp-btn {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: .8rem .95rem;
+  cursor: pointer;
+  transition: all .3s var(--ease-spring);
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+}
+.rdp.open .rdp-btn:nth-child(1) {
+  animation: rdpBtnIn .35s .08s var(--ease-spring) forwards;
+}
+.rdp.open .rdp-btn:nth-child(2) {
+  animation: rdpBtnIn .35s .16s var(--ease-spring) forwards;
+}
+@keyframes rdpBtnIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.rdp:not(.open) .rdp-btn {
+  animation: none !important;
+  opacity: 0;
+  transform: translateY(8px);
+}
+.rdp-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--text);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .38s var(--ease-out);
+  z-index: 0;
+  border-radius: 13px;
+}
+.rdp-btn:hover::before { transform: scaleX(1); }
+.rdp-btn:hover {
+  border-color: var(--text);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+[data-theme="light"] .rdp-btn {
+  background: rgba(255,255,255,.82);
+  border-color: var(--border);
+  box-shadow: 0 1px 6px rgba(140,120,90,.06);
+}
+[data-theme="light"] .rdp-btn:hover {
+  box-shadow: 0 6px 24px rgba(140,120,90,.18);
+}
+.rdp-btn-ico {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .88rem; color: var(--text2);
+  flex-shrink: 0;
+  transition: .3s var(--ease-spring);
+  position: relative; z-index: 1;
+}
+.rdp-btn:hover .rdp-btn-ico {
+  background: var(--bg);
+  color: var(--text);
+  border-color: transparent;
+  transform: rotate(-8deg) scale(1.1);
+}
+[data-theme="light"] .rdp-btn-ico {
+  background: var(--warm1);
+  border-color: rgba(180,155,110,.25);
+}
+[data-theme="light"] .rdp-btn:hover .rdp-btn-ico {
+  background: rgba(255,255,255,.95);
+}
+.rdp-btn-txt { flex: 1; min-width: 0; position: relative; z-index: 1; }
+.rdp-btn-title {
+  font-size: .82rem; font-weight: 600; color: var(--text);
+  margin-bottom: .1rem;
+  transition: color .2s;
+}
+.rdp-btn-sub {
+  font-size: .64rem; color: var(--text3); line-height: 1.4;
+  transition: color .2s;
+}
+.rdp-btn:hover .rdp-btn-title,
+.rdp-btn:hover .rdp-btn-sub { color: var(--bg); }
+.rdp-btn-arr {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--surface3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .6rem; color: var(--text3);
+  flex-shrink: 0;
+  transition: .3s var(--ease-spring);
+  position: relative; z-index: 1;
+}
+.rdp-btn:hover .rdp-btn-arr {
+  background: var(--bg);
+  color: var(--text);
+  transform: translateX(2px);
+}
+
+/* ─── POPUP FOOTER ─── */
+.rdp-footer {
+  padding: .55rem 1.3rem .85rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  position: relative; z-index: 1;
+  opacity: 0;
+}
+.rdp.open .rdp-footer {
+  animation: rdpBtnIn .3s .24s var(--ease-spring) forwards;
+}
+.rdp:not(.open) .rdp-footer {
+  animation: none !important;
+  opacity: 0;
+}
+[data-theme="light"] .rdp-footer { border-top-color: var(--border); }
+.rdp-footer-txt {
+  font-size: .6rem; color: var(--text3);
+  display: flex; align-items: center; justify-content: center; gap: .35rem;
+}
+
+/* ─── NO PDF VIEWER ERROR PANEL ─── */
+.rdp-error {
+  position: absolute; inset: 0; z-index: 10;
+  background: var(--bg3);
+  border-radius: 20px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 1.8rem 1.5rem; text-align: center; gap: .7rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.rdp-error.show { opacity: 1; pointer-events: auto; }
+[data-theme="light"] .rdp-error {
+  background: linear-gradient(145deg,#fff 0%,#f8f3ec 100%);
+}
+.rdp-err-ico {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  box-shadow: 0 6px 24px rgba(220,38,38,.3);
+  animation: rdpErrPop .45s var(--ease-spring);
+  flex-shrink: 0;
+}
+@keyframes rdpErrPop {
+  0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+  70%  { transform: scale(1.12) rotate(4deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+.rdp-err-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem; letter-spacing: -.02em; color: var(--text); line-height: 1.25;
+}
+.rdp-err-msg {
+  font-size: .71rem; color: var(--text2); line-height: 1.65; max-width: 220px;
+}
+.rdp-err-btns {
+  display: flex; gap: .5rem; flex-wrap: wrap; justify-content: center; margin-top: .3rem;
+}
+.rdp-err-dl {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .75rem; font-weight: 700;
+  padding: .6rem 1.2rem; border-radius: 100px;
+  background: var(--text); color: var(--bg);
+  border: none; cursor: pointer;
+  transition: .3s var(--ease-spring); font-family: inherit;
+}
+.rdp-err-dl:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+[data-theme="light"] .rdp-err-dl { background: var(--text); color: #faf8f5; }
+.rdp-err-back {
+  display: inline-flex; align-items: center; gap: .4rem;
+  font-size: .75rem; font-weight: 500;
+  padding: .6rem 1rem; border-radius: 100px;
+  background: var(--surface2); color: var(--text2);
+  border: 1px solid var(--border2); cursor: pointer;
+  transition: .3s ease; font-family: inherit;
+}
+.rdp-err-back:hover { color: var(--text); background: var(--surface3); }
+
+/* ─── DOWNLOAD SUCCESS TOAST ─── */
+.rdp-toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--glass);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(74,222,128,.25);
+  border-radius: 14px;
+  padding: .85rem 1.4rem;
+  display: flex; align-items: center; gap: .75rem;
+  box-shadow: var(--sh2);
+  z-index: 9999;
+  opacity: 0; visibility: hidden;
+  transition: .4s var(--ease-spring);
+  min-width: 230px; max-width: calc(100vw - 3rem);
+  pointer-events: none;
+}
+.rdp-toast.show {
+  opacity: 1; visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+[data-theme="light"] .rdp-toast {
+  background: rgba(255,255,255,.97);
+  border-color: rgba(22,128,60,.2);
+  box-shadow: 0 8px 40px rgba(140,120,90,.2);
+}
+.rdp-toast-ico {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem; color: #fff; flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(22,163,74,.3);
+}
+.rdp-toast-txt { flex: 1; }
+.rdp-toast-title { font-size: .78rem; font-weight: 600; color: var(--text); margin-bottom: .1rem; }
+.rdp-toast-sub   { font-size: .63rem; color: var(--text2); }
+.rdp-toast-bar {
+  position: absolute; bottom: 0; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--green), #4ade80);
+  border-radius: 0 0 14px 14px;
+  animation: rdpToastDrain 3s linear forwards;
+}
+@keyframes rdpToastDrain { from { width: 100%; } to { width: 0%; } }

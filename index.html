@@ -59,6 +59,73 @@
         <a href="#contact" class="nl">Contact</a>
       </nav>
       <div class="nav-right">
+        <div class="rdp-anchor" id="rdpAnchor" style="position:relative;display:flex;align-items:center;">
+ 
+  <button class="resume-icon-btn" id="resumeIconBtn" title="Resume" aria-label="Open Resume">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;pointer-events:none;">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14,2 14,8 20,8"/>
+      <line x1="12" y1="18" x2="12" y2="12"/>
+      <polyline points="9,15 12,18 15,15"/>
+    </svg>
+  </button>
+ 
+  <div class="rdp" id="rdp" role="dialog" aria-label="Resume options">
+ 
+    <div class="rdp-file">
+      <div class="rdp-file-ico">PDF</div>
+      <div class="rdp-file-txt">
+        <div class="rdp-file-name">Nishit_Chauhan_Resume.pdf</div>
+        <div class="rdp-file-meta">
+          <span class="rdp-file-dot"></span>
+          136 KB &nbsp;·&nbsp; March 2026
+        </div>
+      </div>
+    </div>
+ 
+    <div class="rdp-actions">
+ 
+      <button class="rdp-btn" id="rdpOpenBtn">
+        <div class="rdp-btn-ico"><i class="fas fa-eye"></i></div>
+        <div class="rdp-btn-txt">
+          <div class="rdp-btn-title">Open in Browser</div>
+          <div class="rdp-btn-sub">View without downloading</div>
+        </div>
+        <div class="rdp-btn-arr"><i class="fas fa-arrow-right"></i></div>
+      </button>
+ 
+      <button class="rdp-btn" id="rdpDlBtn">
+        <div class="rdp-btn-ico"><i class="fas fa-download"></i></div>
+        <div class="rdp-btn-txt">
+          <div class="rdp-btn-title">Download PDF</div>
+          <div class="rdp-btn-sub">Save to your device</div>
+        </div>
+        <div class="rdp-btn-arr"><i class="fas fa-arrow-down"></i></div>
+      </button>
+ 
+    </div>
+ 
+    <div class="rdp-footer">
+      <span class="rdp-footer-txt">
+        <i class="fas fa-shield-halved" style="font-size:.55rem;opacity:.5"></i>
+        Direct file &nbsp;·&nbsp; No tracking
+      </span>
+    </div>
+ 
+    <div class="rdp-error" id="rdpError">
+      <div class="rdp-err-ico">⚠️</div>
+      <div class="rdp-err-title">No PDF Viewer</div>
+      <div class="rdp-err-msg">Your browser can't open PDFs directly. Download the file instead.</div>
+      <div class="rdp-err-btns">
+        <button class="rdp-err-dl" id="rdpErrDl"><i class="fas fa-download"></i> Download</button>
+        <button class="rdp-err-back" id="rdpErrBack"><i class="fas fa-arrow-left"></i> Back</button>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+ 
         <button class="theme-btn" id="themeBtn" aria-label="Toggle theme"><span id="themeIco">🌙</span></button>
         <a href="#contact" class="hire-btn">Available for hire</a>
         <button class="ham" id="ham" aria-label="Menu"
@@ -762,6 +829,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="script.js"></script>
+  
+<div class="rdp-toast" id="rdpToast" role="status" aria-live="polite">
+  <div class="rdp-toast-ico"><i class="fas fa-check"></i></div>
+  <div class="rdp-toast-txt">
+    <div class="rdp-toast-title">Download Started!</div>
+    <div class="rdp-toast-sub">Nishit_Chauhan_Resume.pdf</div>
+  </div>
+  <div class="rdp-toast-bar" id="rdpToastBar"></div>
+</div>
 </body>
 
 </html>
