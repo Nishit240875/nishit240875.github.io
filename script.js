@@ -679,144 +679,97 @@ function launchConfetti() {
 /* ============================================================
    script.js na BILKUL END MA paste karo
    ============================================================ */
-
+/* ════════════════════════════════════════
+   RESUME POPUP LOGIC
+═══════════════════════════════════════ */
 (function () {
   'use strict';
+  const PDF_PATH = 'Document/Nishit Resume.pdf';
+  const PDF_FILENAME = 'Nishit Resume.pdf';
 
-  /* ── CONFIG: tara PDF no path ── */
-  const PDF_PATH     = 'Document/Nishit_Chauhan_Resume.pdf';
-  const PDF_FILENAME = 'Nishit_Chauhan_Resume.pdf';
-
-  /* ── ELEMENTS ── */
   const triggerBtn = document.getElementById('resumeIconBtn');
-  const popup      = document.getElementById('rdp');
-  const openBtn    = document.getElementById('rdpOpenBtn');
-  const dlBtn      = document.getElementById('rdpDlBtn');
+  const popup = document.getElementById('rdp');
+  const openBtn = document.getElementById('rdpOpenBtn');
+  const dlBtn = document.getElementById('rdpDlBtn');
   const errorPanel = document.getElementById('rdpError');
-  const errDlBtn   = document.getElementById('rdpErrDl');
+  const errDlBtn = document.getElementById('rdpErrDl');
   const errBackBtn = document.getElementById('rdpErrBack');
-  const toast      = document.getElementById('rdpToast');
-  const toastBar   = document.getElementById('rdpToastBar');
+  const successPanel = document.getElementById('rdpSuccess');
+  const successDismis = document.getElementById('rdpSuccessDismiss');
+  const toast = document.getElementById('rdpToast');
+  const toastBar = document.getElementById('rdpToastBar');
 
   if (!triggerBtn || !popup) return;
+  let isOpen = false, errVisible = false, toastTimer = null;
 
-  let isOpen     = false;
-  let errVisible = false;
-  let toastTimer = null;
-
-  /* ── PDF VIEWER CHECK ── */
   function hasPdfViewer() {
-    const ua = navigator.userAgent.toLowerCase();
-    if (/chrome|firefox|edg\/|safari/.test(ua)) return true;
-    if (navigator.mimeTypes) {
-      for (let i = 0; i < navigator.mimeTypes.length; i++) {
-        if (/pdf/.test(navigator.mimeTypes[i].type)) return true;
-      }
-    }
-    return false;
+    return /chrome|firefox|edg\/|safari/.test(navigator.userAgent.toLowerCase());
   }
 
-  /* ── OPEN POPUP ── */
   function openPopup() {
-    errorPanel.classList.remove('show');
-    errVisible = false;
-
-    popup.querySelectorAll('.rdp-btn, .rdp-footer').forEach(el => {
-      el.style.animation = 'none';
-      void el.offsetWidth;
-      el.style.animation = '';
-    });
-
-    triggerBtn.classList.add('active');
-    popup.classList.add('open');
-    isOpen = true;
+    errorPanel.classList.remove('show'); successPanel.classList.remove('show'); errVisible = false;
+    popup.querySelectorAll('.rdp-action,.rdp-foot').forEach(el => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
+    triggerBtn.classList.add('active'); popup.classList.add('open'); isOpen = true;
   }
 
-  /* ── CLOSE POPUP ── */
   function closePopup() {
-    triggerBtn.classList.remove('active');
-    popup.classList.remove('open');
-    isOpen = false;
-    setTimeout(() => {
-      errorPanel.classList.remove('show');
-      errVisible = false;
-    }, 320);
+    triggerBtn.classList.remove('active'); popup.classList.remove('open'); isOpen = false;
+    setTimeout(() => { errorPanel.classList.remove('show'); successPanel.classList.remove('show'); errVisible = false; }, 380);
   }
 
-  /* ── TOGGLE ── */
-  function togglePopup() {
-    isOpen ? closePopup() : openPopup();
-  }
-
-  /* ── DOWNLOAD ── */
   function triggerDownload() {
-    const a = document.createElement('a');
-    a.href     = PDF_PATH;
-    a.download = PDF_FILENAME;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => a.remove(), 300);
+    const a = document.createElement('a'); a.href = PDF_PATH; a.download = PDF_FILENAME;
+    a.style.display = 'none'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 300);
   }
 
-  /* ── SUCCESS TOAST ── */
+  function launchInnerSparkles() {
+    const c = document.getElementById('rdpFireCanvas'); if (!c) return;
+    const ctx = c.getContext('2d'); c.width = c.offsetWidth || 310; c.height = c.offsetHeight || 260;
+    const W = c.width, H = c.height;
+    const COLS = ['#ff4757', '#ffa502', '#2ed573', '#1e90ff', '#eccc68', '#a29bfe', '#fd79a8', '#fff'];
+    let pts = [], raf = null;
+    for (let i = 0; i < 60; i++) pts.push({ x: Math.random() * W, y: H * (.3 + Math.random() * .5), vx: (Math.random() - .5) * 4, vy: -(Math.random() * 5 + 2), r: 2 + Math.random() * 3, life: 1, dec: .013 + Math.random() * .012, col: COLS[Math.floor(Math.random() * COLS.length)], shape: Math.random() < .3 ? 'sq' : 'dot' });
+    function draw() {
+      ctx.clearRect(0, 0, W, H); pts = pts.filter(p => p.life > 0);
+      if (!pts.length) { cancelAnimationFrame(raf); return; }
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += .09; p.vx *= .98; p.life -= p.dec;
+        ctx.save(); ctx.globalAlpha = Math.max(0, p.life); ctx.fillStyle = p.col;
+        if (p.shape === 'sq') { ctx.translate(p.x, p.y); ctx.rotate(p.life * 4); ctx.fillRect(-p.r, -p.r, p.r * 2, p.r * 2); }
+        else { ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2); ctx.fill(); }
+        ctx.restore();
+      });
+      raf = requestAnimationFrame(draw);
+    }
+    raf = requestAnimationFrame(draw);
+  }
+
+  function showSuccess() {
+    successPanel.classList.add('show');
+    launchInnerSparkles();
+    if (window.rdpLaunchFireworks) window.rdpLaunchFireworks();
+    setTimeout(() => { successPanel.classList.remove('show'); }, 5500);
+  }
+
   function showToast() {
-    toastBar.style.animation = 'none';
-    void toastBar.offsetWidth;
-    toastBar.style.animation = 'rdpToastDrain 3s linear forwards';
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+    toastBar.style.animation = 'none'; void toastBar.offsetWidth;
+    toastBar.style.animation = 'rdpBarDrain 3.5s linear forwards';
+    toast.classList.add('show'); clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3700);
   }
 
-  /* ── EVENT LISTENERS ── */
-
-  triggerBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    togglePopup();
-  });
-
+  triggerBtn.addEventListener('click', e => { e.stopPropagation(); isOpen ? closePopup() : openPopup(); });
   openBtn.addEventListener('click', () => {
-    if (hasPdfViewer()) {
-      window.open(PDF_PATH, '_blank', 'noopener,noreferrer');
-      closePopup();
-    } else {
-      errorPanel.classList.add('show');
-      errVisible = true;
-    }
+    if (hasPdfViewer()) { window.open(PDF_PATH, '_blank', 'noopener,noreferrer'); closePopup(); }
+    else { errorPanel.classList.add('show'); errVisible = true; }
   });
-
-  dlBtn.addEventListener('click', () => {
-    triggerDownload();
-    closePopup();
-    setTimeout(showToast, 280);
-  });
-
-  errDlBtn.addEventListener('click', () => {
-    triggerDownload();
-    closePopup();
-    setTimeout(showToast, 280);
-  });
-
-  errBackBtn.addEventListener('click', () => {
-    errorPanel.classList.remove('show');
-    errVisible = false;
-  });
-
-  document.addEventListener('click', e => {
-    if (isOpen && !triggerBtn.contains(e.target) && !popup.contains(e.target)) {
-      closePopup();
-    }
-  });
-
+  dlBtn.addEventListener('click', () => { triggerDownload(); showSuccess(); setTimeout(showToast, 500); });
+  errDlBtn.addEventListener('click', () => { triggerDownload(); errorPanel.classList.remove('show'); showSuccess(); setTimeout(showToast, 500); });
+  errBackBtn.addEventListener('click', () => { errorPanel.classList.remove('show'); errVisible = false; });
+  successDismis && successDismis.addEventListener('click', () => { successPanel.classList.remove('show'); setTimeout(closePopup, 200); });
+  document.addEventListener('click', e => { if (isOpen && !triggerBtn.contains(e.target) && !popup.contains(e.target)) closePopup(); });
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !isOpen) return;
-    if (errVisible) {
-      errorPanel.classList.remove('show');
-      errVisible = false;
-    } else {
-      closePopup();
-    }
+    if (errVisible) { errorPanel.classList.remove('show'); errVisible = false; } else closePopup();
   });
-
 })();
