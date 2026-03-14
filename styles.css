@@ -7153,3 +7153,69 @@ ul {
 [data-theme="light"] {
   --indigo: #4f46e5;
 }
+/* ── RESUME POPUP — MOBILE FIX ── */
+@media (max-width: 560px) {
+  .rdp {
+    position: fixed;
+    top: 68px;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: calc(100vw - 2rem);
+    transform-origin: top center;
+  }
+
+  .rdp.open {
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 390px) {
+  .rdp {
+    top: 62px;
+    right: 0.75rem;
+    left: 0.75rem;
+    max-width: calc(100vw - 1.5rem);
+  }
+}
+/* ── HERO LINES FIX — visible in both modes ── */
+[data-theme="dark"] .hero-line {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(226, 226, 255, 0.22) 15%,
+    rgba(226, 226, 255, 0.22) 85%,
+    transparent 100%
+  );
+}
+[data-theme="light"] .hero-line {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(180, 140, 60, 0.32) 15%,
+    rgba(180, 140, 60, 0.32) 85%,
+    transparent 100%
+  );
+}
+
+/* ── DARK MODE — "ideas" shimmer like light mode amber ── */
+[data-theme="dark"] .h1-italic {
+  background: linear-gradient(
+    90deg,
+    #c9a96e 0%,
+    #e2e2ff 25%,
+    #ffffff 50%,
+    #e2e2ff 75%,
+    #c9a96e 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: darkItalicShimmer 3.5s ease-in-out infinite;
+}
+@keyframes darkItalicShimmer {
+  0%   { background-position: 100% 0; }
+  50%  { background-position:   0% 0; }
+  100% { background-position: 100% 0; }
+}

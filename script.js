@@ -386,7 +386,7 @@ $$('a[href^="#"]').forEach(a => {
       lines.forEach((l, i) => {
         const s = (i + 1) * 8;
         l.style.transform = `translateY(${cy * s}px)`;
-        l.style.opacity = String(0.03 + Math.abs(cx) * 0.04);
+        l.style.opacity = String(0.25 + Math.abs(cx) * 0.45);
       });
       raf = null;
     });
